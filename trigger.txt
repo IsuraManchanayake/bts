@@ -1,0 +1,57 @@
+
+
+trigger
+=======
+
+1. bus journy: check from, to towns in route
+2. user name unique
+3. check unique usernames in all tables
+4. no overlapping in schedules of the same bus
+5. validate email address
+6. check seat count in specific values: 53, 48, 26(only AC bus)
+7. check in bus type: super-luxury, luxury, semi-luxury, normal
+
+view
+====
+
+1. all user name, password for public
+2. read only views for public
+3. privileges
+	> read
+	=======
+		> busjourny
+		> schedule
+		> journy
+		> bus without password
+	> write
+	=======
+		> booking 
+4. schedule: date time 
+5. check busowner status = active in bus view
+
+table
+=====
+
+1. add column for username and name (full name) in users. - OK
+2. check attributes(NULL, UNIQUE, CHECK IN) again - OK
+##########################
+3. check in: 
+		bus type	: super-luxury, luxiury, semi-luxury, normal
+##########################
+4. schedule add column [state tinyint] - OK
+5. image has link and composite - OK
+
+index
+=====
+
+1. schedule: date
+2. 
+
+function
+========
+
+1. check if table contains data, then return data, if not move to the next.
+2. 
+
+
+INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES ('1', '231', '2313', '123123', '12312', '2312');
