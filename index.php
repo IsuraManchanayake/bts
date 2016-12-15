@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style type="text/css">
          #banner{
             width:100%;
@@ -177,7 +178,7 @@ function carousel() {
                 <div class="panel-body">
                     <form class="form-inline" role="form">
                         <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">From</label>
+                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">From : </label>
                             <select id="pref-perpage" class="form-control">
                                 <option selected style="color: silver">select</option>
                                 <?php
@@ -189,7 +190,7 @@ function carousel() {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">To</label>
+                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">To : </label>
                             <select id="pref-perpage" class="form-control">
                                 <option selected style="color: silver">select</option>
                                 <?php
@@ -201,21 +202,27 @@ function carousel() {
                             </select>   
                         </div> <!-- form group [rows] -->
                         <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-search">Date</label>
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">Date :  </label>
                             <input type="date" value="<?php echo date("Y-m-d");?>" class="form-control input-sm" id="pref-perpage">
                         </div><!-- form group [Date] -->
                         <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-orderby">Order by:</label>
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">Time : </label>
+                            <input type="time" class="form-control input-sm" id="pref-perpage">
+                        </div>
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0; margin-top:0" for="pref-orderby">Bus Type : </label>
                             <select id="pref-orderby" class="form-control">
-                                <option>Descendent</option>
+                                <option>Normal</option>
+                                <option>Semi-Luxury</option>
+                                <option>Luxury</option>
+                                <option>Super-Luxury</option>
                             </select>                                
                         </div> <!-- form group [order by] --> 
                         <div class="form-group">    
-                            <div class="checkbox" style="margin-left:10px; margin-right:10px;">
-                                <label><input type="checkbox"> Remember parameters</label>
-                            </div>
-                            <button type="submit" class="btn btn-default filter-col">
-                                <span class="glyphicon glyphicon-record"></span> Search
+                            
+                            <button type="submit" class="btn btn-default filter-col" style="margin-top:0">
+                            <span>
+                                <i class="glyphicon glyphicon-search"></i></span> Search
                             </button>  
                         </div>
                     </form>
