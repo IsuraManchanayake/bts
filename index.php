@@ -56,11 +56,11 @@
 
 <div id = "top">
 <div id="banner">
-<img class="home banner" src="2.jpg" style="width: 100%">
-<img class="home banner" src="6.jpg" style="width: 100%">
-<img class="home banner" src="1.jpg" style="width: 100%">
-<img class="home banner" src="4.jpg" style="width: 100%">
-<img class="home banner" src="5.jpg" style="width: 100%">
+<img class="home banner" src="images/2.jpg" style="width: 100%">
+<img class="home banner" src="images/6.jpg" style="width: 100%">
+<img class="home banner" src="images/1.jpg" style="width: 100%">
+<img class="home banner" src="images/4.jpg" style="width: 100%">
+<img class="home banner" src="images/5.jpg" style="width: 100%">
 
 <script type="text/javascript">
     var slideIndex = 0;
