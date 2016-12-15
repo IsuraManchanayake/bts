@@ -67,7 +67,7 @@ create table BusJourney(
 	RouteID int(5),
 	FromTown varchar(5),
 	ToTown varchar(5),
-	Duration time not null,
+	Duration bigint not null,
 	PRIMARY KEY(BusJourneyID),
 	FOREIGN KEY(RegNumber) REFERENCES Bus(RegNumber)
 	on delete cascade
@@ -261,17 +261,16 @@ drop trigger if exists Schedule_check1 //
 create trigger Schedule_check1 before insert on Schedule
  	for each row
  	begin
-
+     	set new.ToTime = new.FromTime + (select Duration from BusJourney where BusJourney.BusJourneyID = new.BusJourneyID limit 1);
 		if (exists
 				(select * from Schedule where 
-					(new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
-					(new.ToTime between Schedule.FromTime and Schedule.ToTime)
+					((new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
+					(new.ToTime between Schedule.FromTime and Schedule.ToTime)) and 
+					new.BusJourneyID = Schedule.BusJourneyID
 				)
 			) then
 			signal sqlstate '45002' set message_text = 'Schedule: Overlapping schedules';
 		end if;
-
-     	set new.ToTime = new.FromTime + (select Duration from BusJourney where BusJourney.BusJourneyID = new.BusJourneyID limit 1);
   	end //
 delimiter ;
 
@@ -282,17 +281,16 @@ drop trigger if exists Schedule_check2 //
 create trigger Schedule_check2 before update on Schedule
  	for each row
  	begin
-
+     	set new.ToTime = new.FromTime + (select Duration from BusJourney where BusJourney.BusJourneyID = new.BusJourneyID limit 1);
 		if (exists
 				(select * from Schedule where 
-					(new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
-					(new.ToTime between Schedule.FromTime and Schedule.ToTime)
+					((new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
+					(new.ToTime between Schedule.FromTime and Schedule.ToTime)) and 
+					new.BusJourneyID = Schedule.BusJourneyID
 				)
 			) then
 			signal sqlstate '45002' set message_text = 'Schedule: Overlapping schedules';
 		end if;
-
-     	set new.ToTime = new.FromTime + (select Duration from BusJourney where BusJourney.BusJourneyID = new.BusJourneyID limit 1);
   	end //
 delimiter ;
 
@@ -356,9 +354,49 @@ INSERT INTO `routedestination` (`RouteID`, `TownID`, `Distance`) VALUES
 (255, '2013', 60);
 
 INSERT INTO `busjourney` (`BusJourneyID`, `RegNumber`, `RouteID`, `FromTown`, `ToTown`, `Duration`) VALUES
-('4001', 'NA-0001', 6, '2001', '2006', '03:00:00'),
-('4003', 'NA-0002', 6, '2005', '2006', '01:00:00'),
-('4005', 'NA-0004', 100, '2001', '2011', '01:30:00'),
-('4007', 'NA-0006', 100, '2001', '2010', '01:00:00'),
-('4008', 'NA-0007', 100, '2001', '2008', '00:40:00'),
-('4010', 'NA-0009', 255, '2009', '2013', '01:30:00');
+('4001', 'NA-0001', 6, '2001', '2006', '10800'),
+('4003', 'NA-0002', 6, '2005', '2006', '3600'),
+('4005', 'NA-0004', 100, '2001', '2011', '5400'),
+('4007', 'NA-0006', 100, '2001', '2010', '3600'),
+('4008', 'NA-0007', 100, '2001', '2008', '2400'),
+('4010', 'NA-0009', 255, '2009', '2013', '5400');
+
+INSERT INTO `schedule` (`ScheduleID`, `BusJourneyID`, `FromTown`, `FromTime`, `ToTime`, `Valid`) VALUES
+('6001', '4001', '2001', 16200, 27000, b'1'),
+('6002', '4001', '2006', 30600, 41400, b'1'),
+('6003', '4001', '2001', 45000, 55800, b'1'),
+('6004', '4001', '2006', 59400, 70200, b'1'),
+('6005', '4003', '2001', 30600, 34200, b'1'),
+('6006', '4003', '2005', 37800, 41400, b'1'),
+('6007', '4003', '2001', 45000, 48600, b'1'),
+('6008', '4003', '2005', 52200, 55800, b'1'),
+('6009', '4005', '2001', 30600, 36000, b'1'),
+('6010', '4005', '2011', 39600, 45000, b'1'),
+('6011', '4005', '2001', 55800, 61200, b'1'),
+('6012', '4005', '2011', 66600, 72000, b'1'),
+('6013', '4007', '2001', 14400, 18000, b'1'),
+('6015', '4007', '2001', 21600, 25200, b'1'),
+('6017', '4007', '2001', 32400, 36000, b'1'),
+('6018', '4007', '2010', 39600, 43200, b'1'),
+('6019', '4007', '2001', 46800, 50400, b'1'),
+('6020', '4007', '2010', 54000, 57600, b'1'),
+('6021', '4007', '2001', 61200, 64800, b'1'),
+('6022', '4007', '2010', 68400, 72000, b'1'),
+('6023', '4007', '2001', 75600, 79200, b'1'),
+('6024', '4007', '2010', 82800, 86400, b'1'),
+('6025', '4008', '2001', 25200, 27600, b'1'),
+('6026', '4008', '2008', 32400, 34800, b'1'),
+('6027', '4008', '2001', 39600, 42000, b'1'),
+('6028', '4008', '2008', 46800, 49200, b'1'),
+('6029', '4008', '2001', 54000, 56400, b'1'),
+('6030', '4008', '2008', 61200, 63600, b'1'),
+('6031', '4008', '2001', 68400, 70800, b'1'),
+('6032', '4008', '2008', 75600, 78000, b'1'),
+('6033', '4010', '2009', 28800, 34200, b'1'),
+('6034', '4010', '2013', 36000, 41400, b'1'),
+('6035', '4010', '2009', 43200, 48600, b'1'),
+('6036', '4010', '2013', 50400, 55800, b'1'),
+('6037', '4010', '2009', 57600, 63000, b'1'),
+('6038', '4010', '2013', 64800, 70200, b'1'),
+('6039', '4010', '2009', 72000, 77400, b'1'),
+('6040', '4010', '2013', 79200, 84600, b'1');
