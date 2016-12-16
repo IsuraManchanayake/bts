@@ -125,7 +125,7 @@ create view user as
 
 
 create view publicSchedule as 
-     select ScheduleID, BusJourneyID, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,(SELECT FROM_UNIXTIME(ToTime)) as ToTime,Valid from  Schedule;
+     select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,(SELECT FROM_UNIXTIME(ToTime)) as ToTime from  Schedule where Valid = b'1';
  
 
 drop function get_nearest_schedule;
