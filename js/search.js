@@ -7,16 +7,31 @@ function search() {
 	var at = $("#at").val();
 	var type = $("#type").val();
 
-	if(from == "select" || to == "select") {
+	from = "Pettah";
+	to = "Kurunegala";
+	date = "2016-12-16";
+	at = "10:00";
+	type = "Normal";
+
+	$("#search-results").load('search.php?', 
+		{
+			'from' : from, 
+			'to' : to,
+			'at' : at,
+			'date' : date,
+			'type' : type
+		}
+	);
+
+	/*if(from == "select" || to == "select") {
 		alert("please select locations");
 		return;
 	}
 
-	alert(at);
 	if(at.search("-") != -1) {
 		alert("please select time");
 		return;
-	}
+	}*/
 
-	
+
 }

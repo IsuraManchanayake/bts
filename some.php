@@ -1,4 +1,7 @@
 <?php   
 	$name = $_REQUEST['name'];
-    echo "<p>".$name."</p>";  
+	echo '<table style = "border: 1px solid black">';
+	for($i = 0; $i < 5; $i++)
+	    echo "<tr><td>".$name."</td></tr>";  
+	echo '</table';
 ?>

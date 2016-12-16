@@ -7,12 +7,12 @@
 <body>
 
 <h2>This is a heading</h2>
-
+<div id="gona"></div>
 <p>This is a paragraph.</p>
 <p>This is another paragraph.</p>
 
-<input type="text" id="name">
-<button id = "shit" onclick= "foo()">Click me to hide paragraphs</button>
+<input type="text" id="nameh">
+<button id = "shit" onclick= "foso()">Click me to hide paragraphs</button>
 
 </body>
 </html>

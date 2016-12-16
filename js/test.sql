@@ -36,3 +36,17 @@ select
 | 4010 | NA-0009   |     255 | Mt. Lavinia | Kottawa     | 01:30:00 |
 | 4011 | NA-0009   |     255 | Kottawa     | Piliyandala | 00:45:00 |
 +------+-----------+---------+-------------+-------------+----------+
+
+drop function if exists get_To_TownID;
+DELIMITER $$
+create function get_To_TownID (busJourney_ID varchar(10),fromTownID varchar(5))  RETURNS varchar(5)
+BEGIN
+DECLARE ToTownID varchar(5) DEFAULT '';
+IF (exists (select BusJourneyID from BusJourney where BusJourneyID=busJourney_ID and FromTown=fromTownID))then
+	select ToTown into ToTownID from BusJourney where BusJourneyID=busJourney_ID;
+ELSE
+select FromTown into ToTownID from BusJourney where BusJourneyID=busJourney_ID;
+end IF;
+RETURN ToTownID;
+end$$
+DELIMITER ;

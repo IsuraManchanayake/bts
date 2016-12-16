@@ -78,29 +78,35 @@
           </div><!--
         --><div class="col-xs-6 vcenter">
         <div class="row">
-          <p style="text-align: center; font-size: 20px"><kbd>D.S. Gunasekara</kbd></p>
+          <p style="text-align: center; font-size: 20px">
+            <kbd><span>
+            <i class="glyphicon glyphicon-user"></i>
+            </span>D.S. Gunasekara</kbd>
+          </p>
         </div>
         <div class="row">
-          <p style="text-align: center; font-size: 20px"><kbd>+94 71 5852 028</kbd></p>
+          <p style="text-align: center; font-size: 20px"><kbd><span>
+              <i class="glyphicon glyphicon-phone"></i>
+            </span>+94 71 5852 028</kbd></p>
         </div>
       </div>
     </div>
     <div class="row">
-        <kbd>53 seats</kbd>
-        <kbd>Normal</kbd>
-        <kbd>WiFi</kbd>
-        <kbd>Curtains</kbd>
-          
-        </div>
-        <div class="row" style="margin-right: 5px; text-align: center;">
-<button class="btn btn-primary" style="margin-top: 15px; width:50%;  position: 50%;">
-            <span>
-              <i class="glyphicon glyphicon-shopping-cart"></i>
-            </span> Reserve
-          </button>
-          </div>
+      <kbd>53 seats</kbd>
+      <kbd>Normal</kbd>
+      <kbd>WiFi</kbd>
+      <kbd>Curtains</kbd>
+
+    </div>
+    <div class="row" style="margin-right: 5px; text-align: center;">
+      <button class="btn btn-primary" style="margin-top: 15px; width:50%;  position: 50%;">
+        <span>
+          <i class="glyphicon glyphicon-shopping-cart"></i>
+        </span> Reserve
+      </button>
     </div>
   </div>
+</div>
 </div>
 
 

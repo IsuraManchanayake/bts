@@ -79,91 +79,21 @@ function carousel() {
     setTimeout(carousel, 2000); // Change image every 2 seconds
 }
 </script>
+
+
 <div class="col-sm-9 main2 " >
-                <div class=""><div class="panel panel-success center">
+                <div><div class="panel panel-success center">
                     <div class="panel-heading ">
                         <div class="container-fluid">
-                            <p><h2 class="">NW-1402 <span class="text-muted"><button class="btn btn-danger pull-right">Suspend</button></span></h2></p>
-                        </div>
-                        <div class="container-fluid"><span class="text-muted">Active</span></div>
-                    </div>
-                    <div class="panel-body ">
-
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <img src="images\bus.jpg" class="img-resize img-rounded img-bus">
-                                </div>
-                                <div class="col-xs-8">
-                                    <form action="template.html" class="form-horizontal" >
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Route :</span></strong> <span class="text-muted">Ambalangoda- Colombo</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Route NO :</span></strong> <span class="text-muted">02</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Total bookings :</span></strong> <span class="text-muted">30</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Total income :</span></strong> <span class="text-muted">1000.00</span>
-                                        </div>
-                                        <button type="submit" class="btn btn-info pull-right">More</button>
-
-
-                                    </form>
-                                </div>
-                            </div>
-                    </div>
-                        </div>
-                    <div class="panel-footer panel-success"></div>
-
-                </div></div>
-                <div class=""><div class="panel panel-danger center">
-                    <div class="panel-heading ">
-                        <div class="container-fluid">
-                            <?php
-                                test1($mysqli);
-                                ?>
-                            <p><h2 class="">NW-1402 <span class="text-muted"><button class="btn btn-success pull-right">Activate</button></span></h2></p>
-                        </div>
-                        <div class="container-fluid"><span class="text-muted">Suspended</span></div>
-
-
-                    </div>
-                    <div class="panel-body panel-danger">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <img src="images\bus.jpg" class="img-resize img-rounded img-bus">
-                                </div>
-                                <div class="col-xs-8">
-                                    <form action="template.html" class="form-horizontal" >
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Route :</span></strong> <span class="text-muted">Ambalangoda- Colombo</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Route NO :</span></strong> <span class="text-muted">02</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Total bookings :</span></strong> <span class="text-muted">30</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <strong><span class="text-info">Total income :</span></strong> <span class="text-muted">1000.00</span>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-info pull-right">More</button>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer panel-danger"></div>
-                </div></div>
+                            
+                    
+<p id="search-results"> isura </p>
+                </div>
             </div><!--end of main -->
         </div><!--end of row-->
+
     </div><!-- end of container-->
+
 </div>
 
 
@@ -172,61 +102,82 @@ function carousel() {
         <div id="filter-panel">
             <div class="panel panel-default" >
                 <div class="panel-body">
-                    <form class="form-inline" role="form">
-                        <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">From : </label>
-                            <select id="from" class="form-control">
-                                <option selected style="color: silver">select</option>
-                                <?php
-                                    $rows = get_all_location_names($mysqli);
-                                    while($row = $rows->fetch_assoc()) {
-                                        echo "<option>" . $row['townname'] . "</option>";
-                                    }
-                                ?> 
-                            </select>
+                        <div class="row">
+
+                            <div class="col-md-1">
+                                <label class="filter-col" style="margin-right:0;" for="pref-perpage">From : </label>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="from" class="form-control">
+                                    <option selected style="color: silver">select</option>
+                                    <?php
+                                        $rows = get_all_location_names($mysqli);
+                                        while($row = $rows->fetch_assoc()) {
+                                            echo "<option>" . $row['townname'] . "</option>";
+                                        }
+                                    ?> 
+                                </select>
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="filter-col" style="margin-right:0;" for="pref-perpage">To : </label>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="to" class="form-control">
+                                    <option selected style="color: silver">select</option>
+                                    <?php
+                                        $rows = get_all_location_names($mysqli);
+                                        while($row = $rows->fetch_assoc()) {
+                                            echo "<option>" . $row['townname'] . "</option>";
+                                        }
+                                    ?>                   
+                                </select>   
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="filter-col" style="margin-right:0;" for="pref-search">Date :  </label>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="date" type="date" value="<?php echo date("Y-m-d");?>" class="form-control input" id="pref-perpage">
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="filter-col" style="margin-right:0;">Time : </label>
+                            </div>
+                            <div class="col-md-2">
+                                <input id="at" type="time" class="form-control input" id="pref-perpage">
+                            </div>
+
+                            <div class="col-md-1">
+                                <label class="filter-col" style="margin-right:0; margin-top:0">Bus Type : </label>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="type" class="form-control">
+                                    <option>Normal</option>
+                                    <option>Semi-Luxury</option>
+                                    <option>Luxury</option>
+                                    <option>Super-Luxury</option>
+                                </select>                                
+                            </div>
+
+                        </div>  
+                        
+                        <div class="row">
+                            <div class="col-md-15" >    
+                                <button class="btn btn-default filter-col" style="margin-top:0; width: 100%" onclick="search()">
+                                <span>
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </span> Search
+                                </button>  
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">To : </label>
-                            <select id="to" class="form-control">
-                                <option selected style="color: silver">select</option>
-                                <?php
-                                    $rows = get_all_location_names($mysqli);
-                                    while($row = $rows->fetch_assoc()) {
-                                        echo "<option>" . $row['townname'] . "</option>";
-                                    }
-                                ?>                   
-                            </select>   
-                        </div> <!-- form group [rows] -->
-                        <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-search">Date :  </label>
-                            <input id="date" type="date" value="<?php echo date("Y-m-d");?>" class="form-control input-sm" id="pref-perpage">
-                        </div><!-- form group [Date] -->
-                        <div class="form-group">
-                            <label class="filter-col" style="margin-right:0;" for="pref-search">Time : </label>
-                            <input id="at" type="time" class="form-control input-sm" id="pref-perpage">
-                        </div>
-                        <div class="form-group">
-                            <label class="filter-col" style="margin-right:0; margin-top:0" for="pref-orderby">Bus Type : </label>
-                            <select id="type" class="form-control">
-                                <option>Normal</option>
-                                <option>Semi-Luxury</option>
-                                <option>Luxury</option>
-                                <option>Super-Luxury</option>
-                            </select>                                
-                        </div> <!-- form group [order by] --> 
-                        <div class="form-group">    
-                            <button class="btn btn-default filter-col" style="margin-top:0" onclick="search()">
-                            <span>
-                                <i class="glyphicon glyphicon-search"></i></span> Search
-                            </button>  
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>    
     </div>
 </div>
 </div>
+
       
     <script type="text/javascript" src="js/search.js"></script>
 </body>
