@@ -57,7 +57,7 @@
 
 <div id = "top">
 <div id="banner">
-<img class="home banner" src="images/2.jpg" style="width: 100%">
+<!--<img class="home banner" src="images/2.jpg" style="width: 100%">
 <img class="home banner" src="images/6.jpg" style="width: 100%">
 <img class="home banner" src="images/1.jpg" style="width: 100%">
 <img class="home banner" src="images/4.jpg" style="width: 100%">
@@ -69,7 +69,7 @@
 
 function carousel() {
     var i;
-    var x = document.getElementsByClassName("home banner");
+    var x = document.getElementsByClassName("banner");
     for (i = 0; i < x.length; i++) {
       x[i].style.display = "none"; 
     }
@@ -78,7 +78,7 @@ function carousel() {
     x[slideIndex-1].style.display = "block"; 
     setTimeout(carousel, 2000); // Change image every 2 seconds
 }
-</script>
+</script>-->
 
 
 <div class="col-sm-9 main2 " >
@@ -87,11 +87,16 @@ function carousel() {
                         <div class="container-fluid">
                             
                     
-<p id="search-results"> isura </p>
+<p id="search-results">
+Isura
+</p>
                 </div>
             </div><!--end of main -->
         </div><!--end of row-->
-
+<?php
+    include('searchresult.php');
+    displayresult('', '', '', '', '', '', '', '', '', '', '', '', '', '', array());
+?>
     </div><!-- end of container-->
 
 </div>
