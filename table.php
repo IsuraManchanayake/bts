@@ -26,19 +26,19 @@
 
         <div class="col-xs-4">
           <div id="banner">
-            <img class="home banner img-thumbnail" src="images/2.jpg" style="width: 100%">
-            <img class="home banner img-thumbnail" src="images/6.jpg" style="width: 100%">
-            <img class="home banner img-thumbnail" src="images/1.jpg" style="width: 100%">
-            <img class="home banner img-thumbnail" src="images/4.jpg" style="width: 100%">
-            <img class="home banner img-thumbnail" src="images/5.jpg" style="width: 100%">
+            <img class="banner2 img-thumbnail" src="images/2.jpg" style="width: 100%">
+            <img class="banner2 img-thumbnail" src="images/6.jpg" style="width: 100%">
+            <img class="banner2 img-thumbnail" src="images/1.jpg" style="width: 100%">
+            <img class="banner2 img-thumbnail" src="images/4.jpg" style="width: 100%">
+            <img class="banner2 img-thumbnail" src="images/5.jpg" style="width: 100%">
 
             <script type="text/javascript">
               var slideIndex = 0;
-              carousel();
+              carousel2();
 
-              function carousel() {
+              function carousel2() {
                 var i;
-                var x = document.getElementsByClassName("home banner");
+                var x = document.getElementsByClassName("banner2");
                 for (i = 0; i < x.length; i++) {
                   x[i].style.display = "none"; 
                 }
@@ -47,7 +47,7 @@
                   slideIndex = 1;
                 } 
                 x[slideIndex-1].style.display = "block"; 
-              setTimeout(carousel, 2000); // Change image every 2 seconds
+              setTimeout(carousel2, 2000); // Change image every 2 seconds
             }
           </script>
         </div>
@@ -108,8 +108,7 @@
   </div>
 </div>
 </div>
-
-
 </div>
+
 </body>
 </html>
