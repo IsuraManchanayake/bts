@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <style type="text/css">
          #banner{
             width:100%;
@@ -157,17 +158,12 @@ function carousel() {
                                 </div>
                             </div>
                         </div>
-                        <!--<p><strong>Total Bookings :</strong> 10</p>-->
-                        <!--<p><strong>Total income :</strong> 1000</p>-->
                     </div>
                     <div class="panel-footer panel-danger"></div>
                 </div></div>
             </div><!--end of main -->
         </div><!--end of row-->
     </div><!-- end of container-->
-<script src="js/jquery-3.1.1.slim.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/script.js"></script>
 </div>
 
 
@@ -179,7 +175,7 @@ function carousel() {
                     <form class="form-inline" role="form">
                         <div class="form-group">
                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">From : </label>
-                            <select id="pref-perpage" class="form-control">
+                            <select id="from" class="form-control">
                                 <option selected style="color: silver">select</option>
                                 <?php
                                     $rows = get_all_location_names($mysqli);
@@ -191,7 +187,7 @@ function carousel() {
                         </div>
                         <div class="form-group">
                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">To : </label>
-                            <select id="pref-perpage" class="form-control">
+                            <select id="to" class="form-control">
                                 <option selected style="color: silver">select</option>
                                 <?php
                                     $rows = get_all_location_names($mysqli);
@@ -203,15 +199,15 @@ function carousel() {
                         </div> <!-- form group [rows] -->
                         <div class="form-group">
                             <label class="filter-col" style="margin-right:0;" for="pref-search">Date :  </label>
-                            <input type="date" value="<?php echo date("Y-m-d");?>" class="form-control input-sm" id="pref-perpage">
+                            <input id="date" type="date" value="<?php echo date("Y-m-d");?>" class="form-control input-sm" id="pref-perpage">
                         </div><!-- form group [Date] -->
                         <div class="form-group">
                             <label class="filter-col" style="margin-right:0;" for="pref-search">Time : </label>
-                            <input type="time" class="form-control input-sm" id="pref-perpage">
+                            <input id="at" type="time" class="form-control input-sm" id="pref-perpage">
                         </div>
                         <div class="form-group">
                             <label class="filter-col" style="margin-right:0; margin-top:0" for="pref-orderby">Bus Type : </label>
-                            <select id="pref-orderby" class="form-control">
+                            <select id="type" class="form-control">
                                 <option>Normal</option>
                                 <option>Semi-Luxury</option>
                                 <option>Luxury</option>
@@ -219,8 +215,7 @@ function carousel() {
                             </select>                                
                         </div> <!-- form group [order by] --> 
                         <div class="form-group">    
-                            
-                            <button type="submit" class="btn btn-default filter-col" style="margin-top:0">
+                            <button class="btn btn-default filter-col" style="margin-top:0" onclick="search()">
                             <span>
                                 <i class="glyphicon glyphicon-search"></i></span> Search
                             </button>  
@@ -232,9 +227,7 @@ function carousel() {
     </div>
 </div>
 </div>
- 
-<script src="js/jquery-3.1.1.slim.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/script.js"></script>          
+      
+    <script type="text/javascript" src="js/search.js"></script>
 </body>
 </html>
