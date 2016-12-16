@@ -127,6 +127,9 @@ create view user as
 create view publicSchedule as 
      select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,(SELECT FROM_UNIXTIME(ToTime)) as ToTime from  Schedule where Valid = b'1';
  
+create view BookingSchedule as 
+select distinct(s.scheduleID),b.RegNumber,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,abs((select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID)-(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID))  from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID order by 1;
+
 
 drop function get_nearest_schedule;
 DELIMITER $$
@@ -321,6 +324,29 @@ create trigger Schedule_check2 before update on Schedule
   	end //
 delimiter ;
 
+drop function if exists get_nearest_schedule;
+DELIMITER $$
+create function get_nearest_schedule (regnum varchar(10),time bigint)  RETURNS varchar(8)
+BEGIN
+DECLARE Schedule_ID varchar(8) DEFAULT '';
+select `ScheduleID` into Schedule_ID from (select abs(`FromTime`-30300),`ScheduleID` from `Schedule` WHERE `ScheduleID` in (select `ScheduleID` from `Schedule` where `BusJourneyID` in (select `BusJourneyID` from `Busjourney` where RegNumber='NA-0001')) order by 1 limit 1) b ;
+RETURN Schedule_ID;
+end$$
+DELIMITER ;
+
+drop function if exists get_To_TownID;
+DELIMITER $$
+create function get_To_TownID (busJourney_ID varchar(10),fromTownID varchar(5))  RETURNS varchar(5)
+BEGIN
+DECLARE ToTownID varchar(5) DEFAULT '';
+IF (exists (select BusJourneyID from BusJourney where BusJourneyID=busJourney_ID and FromTown=fromTownID))then
+	select ToTown into ToTownID from BusJourney where BusJourneyID=busJourney_ID;
+ELSE
+select FromTown into ToTownID from BusJourney where BusJourneyID=busJourney_ID;
+end IF;
+RETURN ToTownID;
+end$$
+DELIMITER ;
 
 
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES
