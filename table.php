@@ -58,8 +58,8 @@
           <div class="col-xs-3 vcenter">
             <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">1:00 AM</strong><br>Colombo</p>    
           </div><!--
-          --><div class="col-xs-3 vcenter">
-            <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">4:00 AM</strong><br>Kurunegala</p>    
+        --><div class="col-xs-3 vcenter">
+        <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">4:00 AM</strong><br>Kurunegala</p>    
           </div><!--
         --><div class="col-xs-3 vcenter">
         <p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">6</strong><br>route</p>
@@ -70,49 +70,40 @@
 </div>
 
 <div class="row">
-          <div class="col-xs-3 vcenter">
-            <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">91 km</strong><br>distance</p>    
+  <div class="col-xs-3 vcenter">
+    <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">91 km</strong><br>distance</p>    
           </div><!--
-          --><div class="col-xs-3 vcenter">
-            <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">300.00</strong><br>ticket price(LKR)</p>    
+        --><div class="col-xs-3 vcenter">
+        <p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">300.00</strong><br>ticket price(LKR)</p>    
           </div><!--
         --><div class="col-xs-6 vcenter">
-            <div class="row">
-              <p style="text-align: center; font-size: 20px"><kbd>D.S. Gunasekara</kbd></p>
-            </div>
-            <div class="row">
-              <p style="text-align: center; font-size: 20px"><kbd>+94 71 5852 028</kbd></p>
-            </div>
+        <div class="row">
+          <p style="text-align: center; font-size: 20px"><kbd>D.S. Gunasekara</kbd></p>
+        </div>
+        <div class="row">
+          <p style="text-align: center; font-size: 20px"><kbd>+94 71 5852 028</kbd></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <kbd>53 seats</kbd>
+        <kbd>Normal</kbd>
+        <kbd>WiFi</kbd>
+        <kbd>Curtains</kbd>
+          
+        </div>
+        <div class="row" style="margin-right: 5px; text-align: center;">
+<button class="btn btn-primary" style="margin-top: 15px; width:50%;  position: 50%;">
+            <span>
+              <i class="glyphicon glyphicon-shopping-cart"></i>
+            </span> Reserve
+          </button>
           </div>
-</div>
-</div>
-</div>
-
-<div class="row" style="padding-left: 5px">
-  <div class="col-xs-8 vcenter">
-    <div class="col-xs-3 bg-danger">
-      <p style="text-align: center;">53 seats</p>
     </div>
-    <div class="col-xs-3 bg-warning">
-      <p style="text-align: center;">Normal</p>
-    </div>
-    <div class="col-xs-3 bg-success">
-      <p style="text-align: center;">WiFi</p>
-    </div>
-    <div class="col-xs-3 bg-danger">
-      <p style="text-align: center;">Curtains</p>
-    </div>
-  </div>
-  <div class="col-xs-3 vcenter" style="padding-bottom: 5px">
-    <button class="btn btn-default" style="width: 100%;">
-      <span>
-        <i class="glyphicon glyphicon-search"></i>
-      </span> Reserve
-    </button>  
   </div>
 </div>
 
-</div>
+
 </div>
 </body>
 </html>
