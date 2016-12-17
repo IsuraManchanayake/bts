@@ -1,16 +1,22 @@
 
 <?php
 
-	$from = $_REQUEST['from'];
-	$to = $_REQUEST['to'];
-	$date = $_REQUEST['date'];
-	$at = $_REQUEST['at'];
-	$type = $_REQUEST['type'];
+$from = $_REQUEST['from'];
+$to = $_REQUEST['to'];
+$date = $_REQUEST['date'];
+$at = $_REQUEST['at'];
+$type = $_REQUEST['type'];
 
-	echo $from.' '.$to.' '.$date.' '.$at.' '.$type;
+echo $from.' '.$to.' '.$date.' '.$at.' '.$type;
 
-	function displaySearchContent() {
+include 'searchresult.php';
+for ($i=0; $i < 5; $i++) { 
+	displayresult('', '', '', '', '', '', '', '', '', '', '', '', '', '', array());
+	echo '<br>';
+}
 
-	}
+function displaySearchContent() {
+
+}
 
 ?>

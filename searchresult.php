@@ -15,6 +15,7 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
   $ownerphone = '+94 71 5850 028';
   $bustype = 'Semi-Luxury';
   $images = array('1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg');
+  $banid = rand(1000, 10000);
 
 
   echo '
@@ -48,16 +49,16 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
             <div id="banner">';
 
               foreach ($images as $key => $value) {
-                echo '<img class="banner2 img-thumbnail" src="images/'.$value.'" style="width: 100%">';
+                echo '<img class="'.$banid.' img-thumbnail" src="images/'.$value.'" style="width: 80%">';
               }
 
               echo '<script type="text/javascript">
               var slideIndex = 0;
-              carousel2();
+              carousel'.$banid.'();
 
-              function carousel2() {
+              function carousel'.$banid.'() {
                 var i;
-                var x = document.getElementsByClassName("banner2");
+                var x = document.getElementsByClassName("'.$banid.'");
                 for (i = 0; i < x.length; i++) {
                   x[i].style.display = "none"; 
                 }
@@ -66,7 +67,7 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
                   slideIndex = 1;
                 } 
                 x[slideIndex-1].style.display = "block"; 
-                setTimeout(carousel2, 2000); // Change image every 2 seconds
+                setTimeout(carousel'.$banid.', 2000); // Change image every 2 seconds
               }
             </script>
           </div>
