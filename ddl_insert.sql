@@ -68,6 +68,7 @@ create table BusJourney(
 	FromTown varchar(5),
 	ToTown varchar(5),
 	Duration bigint not null,
+	Valid bit default 1,
 	PRIMARY KEY(BusJourneyID),
 	FOREIGN KEY(RegNumber) REFERENCES Bus(RegNumber)
 	on delete cascade
