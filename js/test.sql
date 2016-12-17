@@ -92,6 +92,9 @@ DELIMITER ;
 -- DELIMITER ;
 
 
+create view BookingSchedule2 as 
+select distinct(s.scheduleID),b.RegNumber,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,s.FromInt,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.ToInt,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,abs((select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID)-(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID)) as Distance  from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID order by 1;
+
 drop view if exists journey_route;
 create view journey_route as select busjourneyid, routeid from busjourney;
 
@@ -136,24 +139,85 @@ BEGIN
 END $$
 DELIMITER ;
 
-select 
-	busjourneyid,
-	scheduleid,
-	regnumber,
-	fromtime,
-	fromtownname,
-	totime,
-	totownname,
-	distance,
-	routeid,
-	from_unixtime(fromint + journey_duration(busjourneyid, fd)) as ft, 
-	from_unixtime(fromint + journey_duration(busjourneyid, td)) as tt
-	from 
+
+drop view if exists searchSchedule;
+create view searchSchedule
+as
+select
+	*
+	from
 	(
-		select 
-		*,
-		destination_distance(busjourneyid, fromtownid, 2002) as fd,
-		destination_distance(busjourneyid, fromtownid, 2005) as td 
-		from extended_schedule
-	) as dd
-where td >= fd;
+		select
+		busjourneyid, 
+		scheduleid,
+		regnumber,
+		fromtime,
+		fromtownname,
+		totime,
+		totownname,
+		distance,
+		routeid,
+		noseat,
+		type,
+		wifi,
+		haveCurtains,
+		phonenumber,
+		from_unixtime(fromint + journey_duration(busjourneyid, fd)) as ft, 
+		from_unixtime(fromint + journey_duration(busjourneyid, td)) as tt,
+		fd,
+		td
+		from 
+		(
+			select 
+			*,
+			destination_distance(busjourneyid, fromtownid, 2001) as fd,
+			destination_distance(busjourneyid, fromtownid, 2005) as td 
+			from extended_schedule
+		) as dd
+	where 
+	td >= fd
+	) as titable
+	where abs(unix_timestamp(ft) - 1481871600) <= 3600
+;
+
+create or replace view schedule_ext as 
+	select
+			scheduleid as id,
+			busjourneyid as bjid,
+			fromtown as ftown,
+			fromtime as ft,
+			totime as tt
+		from schedule
+		where valid = 1;
+
+create or replace view busjourney_ext as
+	select 
+		* 
+	from
+		a
+	as st
+	left outer join
+	busjourney
+	on
+	busjourney.busjourneyid = st.bjid;
+
+create or replace view searchSchedule
+as
+select
+	id,
+	bjid,
+	ftown,
+	totown,
+	ft,
+	tt,
+	routeid,
+	duration,
+	phonenumber,
+	NoSeat,
+	type,
+	wifi,
+	haveCurtains
+from
+b as bjt
+natural join
+bus;
