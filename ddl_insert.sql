@@ -105,6 +105,14 @@ create table Booking(
 	FOREIGN KEY(FromTown) REFERENCES Location(TownID),
 	FOREIGN KEY(ToTown) REFERENCES Location(TownID)
 );
+
+create table BookingSeats(
+	TicketNo varchar(10),
+	SeatNumber int,
+	PRIMARY KEY(TicketNo,SeatNumber),
+	FOREIGN KEY(TicketNo) REFERENCES Booking(TicketNo)
+);
+
 create table Admin (
 	AdminID varchar(4),
 	Name varchar(100) unique,
@@ -112,7 +120,6 @@ create table Admin (
 	CostPerKm Numeric(4,2) not null,
 	Primary Key(AdminID)
 );
-
 
 create view publicBus 
 	as 
