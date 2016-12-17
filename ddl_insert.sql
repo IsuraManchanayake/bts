@@ -11,6 +11,13 @@ create table BusOwner(
 	Email varchar(100),
 	PRIMARY KEY(ID)
 );
+
+create table CostPerKm (
+    BusType varchar(15),
+    CostPerKm Numeric(4,2) not null,
+    Primary Key(BusType)
+);
+
 #Bus owner ID is produced by the application. It won't change. The row can be only deleted. Thus only 'on delete cascade'
 create table Bus(
 	RegNumber varchar(10),
@@ -23,7 +30,8 @@ create table Bus(
 	password varchar(300) not null,
 	PRIMARY KEY(RegNumber),
 	FOREIGN KEY(BusOwnerID) REFERENCES BusOwner(ID)
-	on delete cascade
+	on delete cascade,
+	FOREIGN KEY(Type) REFERENCES CostPerKm(BusType)
 );
 #RegNumber of the bus is a user insertion field. user can enter it wrongly. Thus he may need to change it later. Hence require both on update/delete cascade
 #number is to have a order of photoes for a bus. A single bus may have none or more photoes.
@@ -115,11 +123,11 @@ create table BookingSeats(
 
 create table Admin (
 	AdminID varchar(4),
-	Name varchar(100) unique,
+	Name varchar(100) unique not null,
 	Password varchar(300) not null,
-	CostPerKm Numeric(4,2) not null,
 	Primary Key(AdminID)
 );
+
 
 create view publicBus 
 	as 
@@ -386,6 +394,11 @@ INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VA
 ('1005', 'BusOwner5', 'BO5', '123', '1231231235', NULL),
 ('1006', 'BusOwner6', 'BO6', '123', '1231231236', NULL);
 
+insert into CostPerKm values ('Super-Luxury','45'),
+	 ('Luxury','35'),
+	 ('Semi-Luxury','25'),
+	 ('Normal','15');
+
 INSERT INTO `bus` (`RegNumber`, `BusOwnerID`, `phoneNumber`, `NoSeat`, `Type`, `wifi`, `haveCurtains`, `password`) VALUES
 ('NA-0001', '1001', 77123123, 53, 'Semi-Luxury', b'0', b'0', '123'),
 ('NA-0002', '1001', 77123123, 53, 'Semi-Luxury', b'1', b'0', '123'),
@@ -482,3 +495,4 @@ INSERT INTO `schedule` (`ScheduleID`, `BusJourneyID`, `FromTown`, `FromTime`, `T
 ('6038', '4010', '2013', 1481891400, 1481896800, b'1'),
 ('6039', '4010', '2009', 1481898600, 1481904000, b'1'),
 ('6040', '4010', '2013', 1481905800, 1481911200, b'1');
+
