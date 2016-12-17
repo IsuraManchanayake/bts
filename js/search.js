@@ -7,11 +7,11 @@ function search() {
 	var at = $("#at").val();
 	var type = $("#type").val();
 
-	from = "Pettah";
-	to = "Kurunegala";
-	date = "2016-12-16";
-	at = "10:00";
-	type = "Normal";
+	//from = "Gona";
+	//to = "Kurunegala";
+	//date = "2016-12-16";
+	//at = "10:00";
+	//type = "Normal";
 
 	$("#search-results").load('search.php?', 
 		{
