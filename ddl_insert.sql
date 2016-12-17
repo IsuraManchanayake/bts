@@ -125,20 +125,6 @@ create view publicBus
 	as 
 	select RegNumber,phoneNumber,NoSeat,Type,wifi,haveCurtains from bus;
 
-
-create view user as 
-	select RegNumber as userName,password,'bus' as type from  bus union 
-	select Name as userName,Password as password,'admin' as type from admin union 
-	select UserName as userName,Password as password,'owner' as type from busOwner;
-
-
-create view publicSchedule as 
-     select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,FromTime as FromInt,(SELECT FROM_UNIXTIME(ToTime)) as ToTime,ToTime as ToInt from  Schedule where Valid = b'1';
-   
-create view BookingSchedule as 
-select distinct(s.scheduleID),b.RegNumber,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,s.FromInt,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.ToInt,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,abs((select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID)-(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID)) as Distance  from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID order by 1;
-  
-
 drop function if exists get_nearest_schedule;
 DELIMITER $$
 create function get_nearest_schedule (regnum varchar(10),time bigint)  RETURNS varchar(8)
@@ -162,6 +148,18 @@ end IF;
 RETURN ToTownID;
 end$$
 DELIMITER ;
+
+create view user as 
+	select RegNumber as userName,password,'bus' as type from  bus union 
+	select Name as userName,Password as password,'admin' as type from admin union 
+	select UserName as userName,Password as password,'owner' as type from busOwner;
+
+
+create view publicSchedule as 
+     select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,FromTime as FromInt,(SELECT FROM_UNIXTIME(ToTime)) as ToTime,ToTime as ToInt from  Schedule where Valid = b'1';
+
+create view BookingSchedule as 
+select distinct(s.scheduleID),b.RegNumber,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,s.FromInt,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.ToInt,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,abs((select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID)-(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID)) as Distance  from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID order by 1;
 
 
 delimiter //
