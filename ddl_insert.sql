@@ -386,6 +386,50 @@ RETURN ToTownID;
 end$$
 DELIMITER ;
 
+drop view if exists journey_route;
+create view journey_route as select busjourneyid, routeid from busjourney;
+
+drop view if exists extended_schedule;
+create view extended_schedule as (select * from bookingschedule natural join journey_route);
+
+drop function if exists journey_duration;
+DELIMITER $$
+create function journey_duration(busjourneyid varchar(10), traveldistance int(3)) RETURNS bigint
+BEGIN
+	declare totaltime bigint;
+	declare totaldistance int(3);
+	declare startdistance int(3);
+	declare enddistance int(3);
+	declare route int(4);
+	set totaltime = (select duration from BusJourney where BusJourney.busjourneyid = busjourneyid limit 1);
+	set route = (select routeid from BusJourney where BusJourney.busjourneyid = busjourneyid limit 1);
+	set startdistance = (select distance from routedestination, (select fromtown from BusJourney where BusJourney.busjourneyid = busjourneyid) as tt where tt.fromtown = routedestination.townid and routeid = routedestination.routeid limit 1);
+	set enddistance = (select distance from routedestination, (select totown from BusJourney where BusJourney.busjourneyid = busjourneyid) as tt where tt.totown = routedestination.townid and route = routedestination.routeid limit 1);
+	set totaldistance = abs(startdistance - enddistance);
+	#return totaldistance / totaltime;
+	return (cast(totaltime * traveldistance as decimal)/ cast(totaldistance as decimal));
+END$$
+DELIMITER ;
+
+
+drop function if exists destination_distance;
+DELIMITER $$
+create function destination_distance(busjourneyid varchar(10), busstarttown varchar(5), destination varchar(5)) RETURNS int(3)
+BEGIN
+	declare totaltime bigint;
+	declare route int(4);
+	declare startdistance int(3);
+	declare destinationdistance int(3);
+	declare totaldistance int(3);
+	set totaltime = (select duration from BusJourney where BusJourney.busjourneyid = busjourneyid);
+	set route = (select routeid from BusJourney where BusJourney.busjourneyid = busjourneyid);
+	set startdistance = (select distance from routedestination where routeid = route and townid = busstarttown);
+	set destinationdistance = (select distance from routedestination where routeid = route and townid = destination);
+	set totaldistance = abs(startdistance - destinationdistance);
+	return totaldistance;
+END$$
+DELIMITER ;
+
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES
 ('1001', 'BusOwner1', 'BO1', '123', '1231231231', NULL),
 ('1002', 'BusOwner2', 'BO2', '123', '1231231232', NULL),
