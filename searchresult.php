@@ -3,9 +3,9 @@
 function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availableseats, $seatno, $distance, $cost, $busowner, $ownerphone, $bustype, $wifi, $curtains, $images) {
 
   $fromtime = '2:00 AM';
-  $fromtown = 'Pettah';
+  //$fromtown = 'gettah';
   $totime = '5:00 AM';
-  $totown = 'Kurunegala';
+  //$totown = 'Kurunegala';
   $routeid = '5';
   $availableseats = '14';
   $seatno = '48';
@@ -13,10 +13,34 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
   $cost = '340.00';
   $busowner = 'DS Gunasekara';
   $ownerphone = '+94 71 5850 028';
-  $bustype = 'Semi-Luxury';
+  //$bustype = 'Semi-Luxury';
   $images = array('1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg');
   $banid = rand(1000, 10000);
+  $wifi = True;
+  $curtains = True;
 
+  $labels = '<span class="label label-default">'.$seatno.' seats</span>';
+  if($wifi) {
+    $labels = $labels.'<span class="label label-default">Wifi</span>';
+  }
+  if($curtains) {
+    $labels = $labels.'<span class="label label-default">Curtains</span>';
+  }
+
+  switch ($bustype) {
+    case 'Normal':
+    $labels = $labels.'<span class="label label-warning">Normal</span>';
+    break;
+    case 'Semi-Luxury':
+    $labels = $labels.'<span class="label label-info">Semi-Luxury</span>';
+    break;
+    case 'Luxury':
+    $labels = $labels.'<span class="label label-success">Luxury</span>';
+    break;
+    case 'Super-Luxury':
+    $labels = $labels.'<span class="label label-primary">Super-Luxury</span>';
+    break;
+  }
 
   echo '
   <!DOCTYPE html>
@@ -29,14 +53,8 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <style type="text/css">
-      .vcenter {
-        display: inline-block;
-        vertical-align: middle;
-        float: none;
-      }
-
-      .vcenter2 {
-        vertical-align: middle;
+      .label {
+        margin-left: 5px;
       }
     </style>
   </head>
@@ -112,19 +130,15 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
 </div>
 </div>
 <div class="row">
-  <kbd>'.$seatno.' seats</kbd>
-  <kbd>'.$bustype.'</kbd>
-  <kbd>wifi</kbd>
-  <kbd>Curtains</kbd>
-
-</div>
-<div class="row" style="margin-right: 5px; text-align: center;">
-  <button class="btn btn-primary" style="margin-top: 15px; width:50%;  position: 50%;">
-    <span>
-      <i class="glyphicon glyphicon-shopping-cart"></i>
-    </span> Reserve
-  </button>
-</div>
+  '.$labels.
+  '</div>
+  <div class="row" style="margin-right: 5px; text-align: center;">
+    <button class="btn btn-primary" style="margin-top: 15px; width:50%;  position: 50%;">
+      <span>
+        <i class="glyphicon glyphicon-shopping-cart"></i>
+      </span> Reserve
+    </button>
+  </div>
 </div>
 </div>
 </div>
