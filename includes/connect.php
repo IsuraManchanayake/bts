@@ -2,8 +2,6 @@
 	include 'constants.php';
 	$mysqli = new MySQLi($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 	
-	echo 'connect.php included!';
-	
 	if(mysqli_connect_errno()) {
 		printf("Connect failed: %123
 			s\n", mysqli_connect_error());
