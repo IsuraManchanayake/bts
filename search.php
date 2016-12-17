@@ -11,7 +11,7 @@ echo $from.' '.$to.' '.$date.' '.$at.' '.$type;
 
 include 'searchresult.php';
 for ($i=0; $i < 5; $i++) { 
-	displayresult('', '', '', '', '', '', '', '', '', '', '', '', '', '', array());
+	displayresult('', $from	, '', $to, '', '', '', '', '', '', '', $type, '', '', array());
 	echo '<br>';
 }
 
