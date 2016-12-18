@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <style type="text/css">
-     #banner{
+       #banner{
         width:100%;
         position: absolute;
         z-index: -1;
@@ -25,11 +25,11 @@
       margin: auto;
   }
 </style>
-<?php include('includes/queries.php'); ?>
+<?php include('includes/includes.php'); ?>
 <title>Title</title>
 </head>
 <body>
-   <nav class="navbar navbar-inverse navbar-fixed-top   ">
+ <nav class="navbar navbar-inverse navbar-fixed-top   ">
 
     <div class="container-fluid">
         <div class = "nav navbar-header">
@@ -117,10 +117,10 @@
                         <label class="filter-col" for="pref-perpage" style="text-align: center;">From</label>
                     </div><!--
                 --><div class="col-sm-9 vcenter">
-                <select id="from" class="form-control">
+                <select id="from" class="form-control" style="font-size: 11px">
                     <option selected style="color: silver">select</option>
                     <?php
-                    $rows = get_all_location_names($mysqli);
+                    $rows = get_all_location_names();
                     while($row = $rows->fetch_assoc()) {
                         echo "<option>" . $row['townname'] . "</option>";
                     }
@@ -136,10 +136,10 @@
                 <label class="filter-col" for="pref-perpage" style="text-align: center;">To</label>
                                     </div><!--
                                 --><div class="col-sm-9 vcenter">
-                                <select id="to" class="form-control">
+                                <select id="to" class="form-control" style="font-size: 11px">
                                     <option selected style="color: silver">select</option>
                                     <?php
-                                    $rows = get_all_location_names($mysqli);
+                                    $rows = get_all_location_names();
                                     while($row = $rows->fetch_assoc()) {
                                         echo "<option>" . $row['townname'] . "</option>";
                                     }
@@ -155,7 +155,7 @@
                                 <label class="filter-col" style="text-align: center;">Date</label>
                                     </div><!--
                                 --><div class="col-sm-9 vcenter">
-                                <input id="date" type="date" value="<?php echo date("Y-m-d");?>" class="form-control input" id="pref-perpage">
+                                <input id="date" type="date" style="font-size: 11px"value="<?php echo date("Y-m-d");?>" class="form-control input" id="pref-perpage">
                             </div>
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                                 <label class="filter-col" style="text-align: center;">Time</label>
                                     </div><!--
                                 --><div class="col-sm-9 vcenter">
-                                <input id="at" type="time" class="form-control input" id="pref-perpage">
+                                <input id="at" type="time" class="form-control input" style="font-size: 11px" id="pref-perpage">
                             </div>
                         </div>
                     </div>
@@ -177,11 +177,14 @@
                                 <label class="filter-col" style="text-align: center; font-size: 11px">Bus Type</label>
                                     </div><!--
                                 --><div class="col-sm-9 vcenter">
-                                <select id="type" class="form-control">
-                                    <option>Normal</option>
-                                    <option>Semi-Luxury</option>
-                                    <option>Luxury</option>
-                                    <option>Super-Luxury</option>
+                                <select id="type" class="form-control" style="font-size: 11px">
+                                    <option selected style="color: silver">Any</option>
+                                    <?php
+                                    $rows = get_all_bus_types();
+                                    while($row = $rows->fetch_assoc()) {
+                                        echo "<option>" . $row['bustype'] . "</option>";
+                                    }   
+                                    ?>
                                 </select> 
                             </div>
                         </div>               
