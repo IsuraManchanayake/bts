@@ -10,7 +10,7 @@ class SearchResultModel
 	public $totime;
 	public $totown;
 	public $route;
-	public $seatno;
+	public $seatcount;
 	public $availableseatcount;
 	public $distance;
 	public $cost;
@@ -26,32 +26,33 @@ class SearchResultModel
 
 	function searchResultToHTML() {
 
-		$fromtime = '2:00 AM';
-  //$fromtown = 'gettah';
-		$totime = '5:00 AM';
-  //$totown = 'Kurunegala';
-		$route = '5';
-		$availableseatcount = '14';
-		$seatno = '48';
-		$distance = '91.5';
-		$cost = '340.00';
-		$busowner = 'DS Gunasekara';
-		$telephone = '+94 71 5850 028';
-  //$bustype = 'Semi-Luxury';
-		$images = array('1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg');
-		$banid = $scheduleid;
-		$wifi = True;
-		$curtains = True;
+		// $fromtime = '2:00 AM';
+  // //$fromtown = 'gettah';
+		// $totime = '5:00 AM';
+  // //$totown = 'Kurunegala';
+		// $route = '5';
+		// $availableseatcount = '14';
+		// $seatcount = '48';
+		// $distance = '91.5';
+		// $cost = '340.00';
+		$this->busowner = 'DS Gunasekara';
+		$banid = $this->scheduleid;
+		// $telephone = '+94 71 5850 028';
+  // //$bustype = 'Semi-Luxury';
+		 $this->images = array('1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg');
+		// $banid = $scheduleid;
+		// $wifi = True;
+		// $curtains = True;
 
-		$labels = '<span class="label label-default">'.$seatno.' seats</span>';
-		if($wifi) {
+		$labels = '<span class="label label-default">'.$this->seatcount.' seats</span>';
+		if($this->wifi) {
 			$labels = $labels.'<span class="label label-default">Wifi</span>';
 		}
-		if($curtains) {
+		if($this->curtains) {
 			$labels = $labels.'<span class="label label-default">Curtains</span>';
 		}
 
-		switch ($bustype) {
+		switch ($this->bustype) {
 			case 'Normal':
 			$labels = $labels.'<span class="label label-warning">Normal</span>';
 			break;
@@ -66,7 +67,7 @@ class SearchResultModel
 			break;
 		}
 
-		return '
+		$html = '
 		<!DOCTYPE html>
 		<html>
 		<head>
@@ -90,17 +91,17 @@ class SearchResultModel
 						<div class="col-xs-4">
 							<div id="banner">';
 
-								foreach ($images as $key => $value) {
-									echo '<img class="'.$banid.' img-thumbnail" src="images/'.$value.'" style="width: 80%">';
-								}
+								 foreach($this->images as $value) {
+									$html = $html.'<img class="a'.$banid.' img-thumbnail" src="images/'.$value.'" style="width: 80%">';
+								 }
 
-								echo '<script type="text/javascript">
+								$html = $html.'<script type="text/javascript">
 								var slideIndex = 0;
 								carousel'.$banid.'();
 
 								function carousel'.$banid.'() {
 									var i;
-									var x = document.getElementsByClassName("'.$banid.'");
+									var x = document.getElementsByClassName("a'.$banid.'");
 									for (i = 0; i < x.length; i++) {
 										x[i].style.display = "none"; 
 									}
@@ -118,38 +119,38 @@ class SearchResultModel
 					<div class="col-xs-8">
 						<div class="row">
 							<div class="col-xs-3 vcenter">
-								<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$fromtime.'</strong><br>'.$fromtown.'</p>    
+								<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->fromtime.'</strong><br>'.$this->fromtown.'</p>    
 							</div><!--
 						--><div class="col-xs-3 vcenter">
-						<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$totime.'</strong><br>'.$totown.'</p>    
+						<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->totime.'</strong><br>'.$this->totown.'</p>    
 					</div><!--
 				--><div class="col-xs-3 vcenter">
-				<p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">'.$route.'</strong><br>route</p>
+				<p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">'.$this->route.'</strong><br>route</p>
 			</div><!--
 		--><div class="col-xs-3 vcenter">
-		<p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">'.$availableseatcount.' / '.$seatno.'</strong><br>available seats</p>
+		<p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">'.$this->availableseatcount.' / '.$this->seatcount.'</strong><br>available seats</p>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-xs-3 vcenter">
-		<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$distance.' km</strong><br>distance</p>    
+		<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->distance.' km</strong><br>distance</p>    
 	</div><!--
 --><div class="col-xs-3 vcenter">
-<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$cost.' LKR</strong><br>ticket price / person</p>    
+<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->cost.' LKR</strong><br>ticket price / person</p>    
 </div><!--
 --><div class="col-xs-6 vcenter">
 <div class="row">
 	<p style="text-align: center; font-size: 20px">
 		<kbd><span>
 			<i class="glyphicon glyphicon-user"></i>
-		</span>'.$busowner.'</kbd>
+		</span>'.$this->busowner.'</kbd>
 	</p>
 </div>
 <div class="row">
 	<p style="text-align: center; font-size: 20px"><kbd><span>
 		<i class="glyphicon glyphicon-phone"></i>
-	</span>'.$telephone.'</kbd></p>
+	</span>'.$this->telephone.'</kbd></p>
 </div>
 </div>
 </div>
@@ -171,6 +172,8 @@ class SearchResultModel
 
 </body>
 </html>';
+
+return $html;
 }
 
 }
