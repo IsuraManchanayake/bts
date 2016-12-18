@@ -468,6 +468,7 @@ select
 	NoSeat,
 	type,
 	wifi,
+	maximumbookings,
 	haveCurtains
 from
 busjourney_ext as bjt
@@ -477,6 +478,7 @@ bus;
 create or replace view journey_route as select busjourneyid as bjid, routeid from busjourney;
 
 create or replace view extended_schedule as (select * from searchSchedule natural join journey_route);
+
 
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES
 ('1001', 'BusOwner1', 'BO1', '123', '1231231231', NULL),
@@ -537,7 +539,7 @@ INSERT INTO `routedestination` (`RouteID`, `TownID`, `Distance`) VALUES
 (100, '2010', 45),
 (100, '2011', 60),
 (255, '2009', 0),
-(255, '2010', 20),
+(255, '2010', 10),
 (255, '2012', 40),
 (255, '2013', 60);
 
