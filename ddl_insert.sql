@@ -513,9 +513,9 @@ INSERT INTO `location` (`TownID`, `TownName`, `GMAPLink`) VALUES
 ('2005', 'Polgahawela', 'Polgahawela Bus Station, 06 Kurunegala Road, Polgahawela 037'),
 ('2006', 'Kurunegala', 'Kurunegala'),
 ('2007', 'Bambalapitiya', 'Unity Plaza Bus Stop, Galle Rd, Colombo'),
-('2008', 'Wellawate', 'Wellawate Mosque Bus Stop, Galle Rd, Colombo'),
+('2008', 'Wellawatte', 'Wellawatte Mosque Bus Stop, Galle Rd, Colombo'),
 ('2009', 'Mt. Lavinia', 'Mt. Lavinia Bus Stand, A2, Dehiwala-Mount Lavinia'),
-('2010', 'Moratuwa', 'Katubadda, Bandaranayake Mawatha, Moratuwa'),
+('2010', 'Katubadda', 'Katubadda, Bandaranayake Mawatha, Moratuwa'),
 ('2011', 'Panadura', 'SLTB Bus Station, Panadura'),
 ('2012', 'Piliyandala', 'Piliyandala Bus Stand, Piliyandala'),
 ('2013', 'Kottawa', 'Kottawa Bus Station, Pannipitiya');
