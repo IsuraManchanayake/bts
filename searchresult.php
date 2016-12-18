@@ -1,6 +1,8 @@
 <?php
 
-function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availableseats, $seatno, $distance, $cost, $busowner, $ownerphone, $bustype, $wifi, $curtains, $images) {
+
+
+/*function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availableseats, $seatno, $distance, $cost, $busowner, $ownerphone, $bustype, $wifi, $curtains, $images) {
 
   $fromtime = '2:00 AM';
   //$fromtown = 'gettah';
@@ -146,6 +148,6 @@ function displayresult($fromtime, $fromtown, $totime, $totown, $routeid, $availa
 </div>
 
 </body>
-</html>';
+</html>';*/
 }
 ?>
