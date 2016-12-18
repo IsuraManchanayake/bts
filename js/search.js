@@ -8,7 +8,7 @@ function search() {
 	var type = $("#type").val();
 
 	from = "Mt. Lavinia";
-	to = "Moratuwa";
+	to = "Katubadda";
 	date = "2016-12-16";
 	at = "08:30";
 	type = "Any";
