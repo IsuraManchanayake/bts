@@ -218,7 +218,7 @@ select
 	type,
 	wifi,
 	maximumbookings,
-	
+
 	haveCurtains
 from
 busjourney_ext as bjt
@@ -272,11 +272,12 @@ select
 			phonenumber,
 			from_unixtime(ft + journey_duration(bjid, fd)) as ftt, 
 			from_unixtime(ft + journey_duration(bjid, td)) as ttt,
-			fd,
-			abs(ft - 1481857200) as diff,
-			from_unixtime(ft) as ft1, 
-			from_unixtime(tt) as tt1,
-			td
+			-- fd,
+			(td - fd) as totaldistance,
+			abs(ft - 1481857200) as diff
+			-- from_unixtime(ft) as ft1, 
+			-- from_unixtime(tt) as tt1,
+			-- td
 		from 
 		(
 			select 
