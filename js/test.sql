@@ -268,10 +268,11 @@ select
 			type,
 			wifi,
 			maximumbookings,
-			haveCurtains,
+			havecurtains,
 			phonenumber,
 			from_unixtime(ft + journey_duration(bjid, fd)) as ftt, 
 			from_unixtime(ft + journey_duration(bjid, td)) as ttt,
+			(td - fd) * costperkm as cost,
 			-- fd,
 			(td - fd) as totaldistance,
 			abs(ft - 1481857200) as diff
@@ -284,7 +285,11 @@ select
 				*,
 				destination_distance(bjid, ftown, 2009) as fd,
 				destination_distance(bjid, ftown, 2010) as td 
-			from extended_schedule
+			from
+			(
+				select * from extended_schedule left outer join costperkm
+				on extended_schedule.type = costperkm.bustype
+			) as with_cost
 		) as dd
 	where td >= fd
 	) as titable
