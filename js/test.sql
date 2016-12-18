@@ -217,20 +217,42 @@ select
 	NoSeat,
 	type,
 	wifi,
+	maximumbookings,
+	
 	haveCurtains
 from
 busjourney_ext as bjt
 natural join
 bus;
 
-drop view if exists journey_route;
-create view journey_route as select busjourneyid as bjid, routeid from busjourney;
+create or replace view journey_route as select busjourneyid as bjid, routeid from busjourney;
 
-drop view if exists extended_schedule;
-create view extended_schedule as (select * from searchSchedule natural join journey_route);
+create or replace view extended_schedule as (select * from searchSchedule natural join journey_route);
+
+insert into bookingseats values
+('7001', '2'), 
+('7002', '1'), 
+('7003', '2'), 
+('7004', '3'), 
+('7005', '2'), 
+('7006', '2'), 
+('7007', '3'), 
+('7008', '1'), 
+('7009', '1'), 
+('7010', '1'), 
+('7011', '1'), 
+('7012', '1'), 
+('7013', '2'), 
+('7014', '3'), 
+('7015', '3'), 
+('7016', '3'), 
+('7017', '3'), 
+('7018', '3'), 
+('7019', '2');
 
 select
-	*
+	*,
+	(maximumbookings - booked) as available
 	from
 	(
 		select
@@ -245,6 +267,7 @@ select
 			noseat,
 			type,
 			wifi,
+			maximumbookings,
 			haveCurtains,
 			phonenumber,
 			from_unixtime(ft + journey_duration(bjid, fd)) as ftt, 
@@ -264,6 +287,16 @@ select
 		) as dd
 	where td >= fd
 	) as titable
+	left outer join
+	(
+		select 
+			scheduleid,
+			count(seatnumber) as booked
+		from booking 
+		natural join bookingseats
+		group by scheduleid
+	) as bookingcnt
+	on bookingcnt.scheduleid = titable.id
 	where diff <= 3600
 	order by diff
 ;
