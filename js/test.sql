@@ -179,7 +179,7 @@ select
 	) as titable
 	where abs(unix_timestamp(ft) - 1481871600) <= 3600
 ;
-
+#====================================================================
 create or replace view schedule_ext as 
 	select
 			scheduleid as id,
@@ -194,7 +194,7 @@ create or replace view busjourney_ext as
 	select 
 		* 
 	from
-		a
+		schedule_ext
 	as st
 	left outer join
 	busjourney
@@ -213,11 +213,58 @@ select
 	routeid,
 	duration,
 	phonenumber,
+	regnumber,
 	NoSeat,
 	type,
 	wifi,
 	haveCurtains
 from
-b as bjt
+busjourney_ext as bjt
 natural join
 bus;
+
+drop view if exists journey_route;
+create view journey_route as select busjourneyid as bjid, routeid from busjourney;
+
+drop view if exists extended_schedule;
+create view extended_schedule as (select * from searchSchedule natural join journey_route);
+
+select
+	*
+	from
+	(
+		select
+			bjid, 
+			id,
+			regnumber,
+			ft,
+			ftown,
+			tt,
+			totown,
+			routeid,
+			noseat,
+			type,
+			wifi,
+			haveCurtains,
+			phonenumber,
+			from_unixtime(ft + journey_duration(bjid, fd)) as ftt, 
+			from_unixtime(ft + journey_duration(bjid, td)) as ttt,
+			fd,
+			abs(ft - 1481871600) as diff,
+			-- from_unixtime(ft) as ft1, 
+			-- from_unixtime(tt) as tt1,
+			td
+		from 
+		(
+			select 
+				*,
+				destination_distance(bjid, ftown, 2001) as fd,
+				destination_distance(bjid, ftown, 2005) as td 
+			from extended_schedule
+		) as dd
+	where 
+	td >= fd
+	) as titable
+	where diff <= 3600
+	order by diff
+;
