@@ -19,4 +19,12 @@
 		return $row['townid'];
 	}
 
+	function get_townname($townid) {
+		$db = new DB();
+		$townid = $db->quote($townid);
+		$result = $db->select('select townname from location where townid = '.$townid);
+		$row = $result->fetch_assoc();
+		return $row['townname'];
+	}
+
 ?>
