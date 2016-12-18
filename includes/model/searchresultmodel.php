@@ -4,6 +4,7 @@
 class SearchResultModel
 {
 	public $scheduleid;
+	public $busjourneyid;
 	public $fromtime;
 	public $fromtown;
 	public $totime;
