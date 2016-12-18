@@ -24,6 +24,7 @@ create table Bus(
 	BusOwnerID varchar(5),
 	phoneNumber int(10),
 	NoSeat int(3),
+	maximumbookings int(3) default 10,
 	Type varchar(15),
 	wifi bit not null default 0,
 	haveCurtains bit default 0,
@@ -430,6 +431,53 @@ BEGIN
 END$$
 DELIMITER ;
 
+create or replace view schedule_ext as 
+	select
+			scheduleid as id,
+			busjourneyid as bjid,
+			fromtown as ftown,
+			fromtime as ft,
+			totime as tt
+		from schedule
+		where valid = 1;
+
+create or replace view busjourney_ext as
+	select 
+		* 
+	from
+		schedule_ext
+	as st
+	left outer join
+	busjourney
+	on
+	busjourney.busjourneyid = st.bjid;
+
+create or replace view searchSchedule
+as
+select
+	id,
+	bjid,
+	ftown,
+	get_To_TownID(bjid, ftown) as totown,
+	ft,
+	tt,
+	routeid,
+	duration,
+	phonenumber,
+	regnumber,
+	NoSeat,
+	type,
+	wifi,
+	haveCurtains
+from
+busjourney_ext as bjt
+natural join
+bus;
+
+create or replace view journey_route as select busjourneyid as bjid, routeid from busjourney;
+
+create or replace view extended_schedule as (select * from searchSchedule natural join journey_route);
+
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES
 ('1001', 'BusOwner1', 'BO1', '123', '1231231231', NULL),
 ('1002', 'BusOwner2', 'BO2', '123', '1231231232', NULL),
@@ -540,4 +588,47 @@ INSERT INTO `schedule` (`ScheduleID`, `BusJourneyID`, `FromTown`, `FromTime`, `T
 ('6038', '4010', '2013', 1481891400, 1481896800, b'1'),
 ('6039', '4010', '2009', 1481898600, 1481904000, b'1'),
 ('6040', '4010', '2013', 1481905800, 1481911200, b'1');
+
+
+insert into booking (ticketno, scheduleid, customername, state, nic, email, payment, paypalpayment) values 
+('7001', '6001', 'isura01', 'Valid', '950304101V', 'isura01.dhaminda@gmail.com', '500.00', 'abc10001s'),
+('7002', '6002', 'isura02', 'Valid', '950304102V', 'isura02.dhaminda@gmail.com', '501.00', 'abc10002s'),
+('7003', '6002', 'isura03', 'Valid', '950304103V', 'isura03.dhaminda@gmail.com', '502.00', 'abc10003s'),
+('7004', '6002', 'isura04', 'Valid', '950304104V', 'isura04.dhaminda@gmail.com', '503.00', 'abc10004s'),
+('7005', '6002', 'isura05', 'Valid', '950304105V', 'isura05.dhaminda@gmail.com', '504.00', 'abc10005s'),
+('7006', '6006', 'isura06', 'Valid', '950304106V', 'isura06.dhaminda@gmail.com', '505.00', 'abc10006s'),
+('7007', '6007', 'isura07', 'Valid', '950304107V', 'isura07.dhaminda@gmail.com', '506.00', 'abc10007s'),
+('7008', '6008', 'isura08', 'Valid', '950304108V', 'isura08.dhaminda@gmail.com', '507.00', 'abc10008s'),
+('7009', '6003', 'isura09', 'Valid', '950304109V', 'isura09.dhaminda@gmail.com', '508.00', 'abc10009s'),
+('7010', '6013', 'isura10', 'Valid', '950304110V', 'isura10.dhaminda@gmail.com', '509.00', 'abc10010s'),
+('7011', '6013', 'isura11', 'Valid', '950304111V', 'isura11.dhaminda@gmail.com', '510.00', 'abc10011s'),
+('7012', '6012', 'isura12', 'Valid', '950304112V', 'isura12.dhaminda@gmail.com', '511.00', 'abc10012s'),
+('7013', '6013', 'isura13', 'Valid', '950304113V', 'isura13.dhaminda@gmail.com', '512.00', 'abc10013s'),
+('7014', '6014', 'isura14', 'Valid', '950304114V', 'isura14.dhaminda@gmail.com', '513.00', 'abc10014s'),
+('7015', '6015', 'isura15', 'Valid', '950304115V', 'isura15.dhaminda@gmail.com', '514.00', 'abc10015s'),
+('7016', '6016', 'isura16', 'Valid', '950304116V', 'isura16.dhaminda@gmail.com', '515.00', 'abc10016s'),
+('7017', '6017', 'isura17', 'Valid', '950304117V', 'isura17.dhaminda@gmail.com', '516.00', 'abc10017s'),
+('7018', '6018', 'isura18', 'Valid', '950304118V', 'isura18.dhaminda@gmail.com', '517.00', 'abc10018s'),
+('7019', '6019', 'isura19', 'Valid', '950304119V', 'isura19.dhaminda@gmail.com', '518.00', 'abc10019s');
+
+insert into bookingseats values
+('7001', '2'), 
+('7002', '1'), 
+('7003', '2'), 
+('7004', '3'), 
+('7005', '2'), 
+('7006', '2'), 
+('7007', '3'), 
+('7008', '1'), 
+('7009', '1'), 
+('7010', '1'), 
+('7011', '1'), 
+('7012', '1'), 
+('7013', '2'), 
+('7014', '3'), 
+('7015', '3'), 
+('7016', '3'), 
+('7017', '3'), 
+('7018', '3'), 
+('7019', '2');
 
