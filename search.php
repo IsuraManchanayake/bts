@@ -9,14 +9,7 @@ $type = $_REQUEST['type'];
 
 echo $from.' '.$to.' '.$date.' '.$at.' '.$type;
 
-include 'searchresult.php';
-for ($i=0; $i < 5; $i++) { 
-	displayresult('', $from	, '', $to, '', '', '', '', '', '', '', $type, '', '', array());
-	echo '<br>';
-}
 
-function displaySearchContent() {
 
-}
 
 ?>
