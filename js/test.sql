@@ -207,7 +207,7 @@ select
 	id,
 	bjid,
 	ftown,
-	totown,
+	get_To_TownID(bjid, ftown) as totown,
 	ft,
 	tt,
 	routeid,
@@ -250,21 +250,21 @@ select
 			from_unixtime(ft + journey_duration(bjid, fd)) as ftt, 
 			from_unixtime(ft + journey_duration(bjid, td)) as ttt,
 			fd,
-			abs(ft - 1481871600) as diff,
-			-- from_unixtime(ft) as ft1, 
-			-- from_unixtime(tt) as tt1,
+			abs(ft - 1481857200) as diff,
+			from_unixtime(ft) as ft1, 
+			from_unixtime(tt) as tt1,
 			td
 		from 
 		(
 			select 
 				*,
-				destination_distance(bjid, ftown, 2001) as fd,
-				destination_distance(bjid, ftown, 2005) as td 
+				destination_distance(bjid, ftown, 2009) as fd,
+				destination_distance(bjid, ftown, 2010) as td 
 			from extended_schedule
 		) as dd
-	where 
-	td >= fd
+	where td >= fd
 	) as titable
 	where diff <= 3600
 	order by diff
 ;
+
