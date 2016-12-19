@@ -55,3 +55,15 @@ function
 
 
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES ('1', '231', '2313', '123123', '12312', '2312');
+
+<form role="form" action="ViewBookings.php" method="get" onsubmit="return checkNextSchedule()">
+            <div class="col-md-2" style="text-align: right">
+                <input type="image" src="../Image/next.png" class="btTxt submit" id="nextBtn"
+                       style="width:50px;height: 50px;margin-top: 10px;"
+                />
+
+                <input type="hidden" name="RegNumber" value="<?php echo $RegNumber ?>"/>
+                <input type="hidden" id="nextScheduleID" name="ScheduleID"
+                       value="<?php if ($nextBooking != null) echo $nextBooking->getScheduleID(); else echo $Schedule->getScheduleID(); ?>"/>
+            </div>
+        </form>
