@@ -24,7 +24,7 @@ create table Bus(
 	BusOwnerID varchar(5),
 	phoneNumber int(10),
 	NoSeat int(3),
-	maximumbookings int(3) default 10,
+	#maximumbookings int(3) default 10,
 	Type varchar(15),
 	wifi bit not null default 0,
 	haveCurtains bit default 0,
@@ -468,7 +468,7 @@ select
 	NoSeat,
 	type,
 	wifi,
-	maximumbookings,
+	NoSeat as maximumbookings,
 	haveCurtains
 from
 busjourney_ext as bjt
@@ -494,8 +494,8 @@ insert into CostPerKm values ('Super-Luxury','45'),
 	 ('Normal','15');
 
 INSERT INTO `bus` (`RegNumber`, `BusOwnerID`, `phoneNumber`, `NoSeat`, `Type`, `wifi`, `haveCurtains`, `password`) VALUES
-('NA-0001', '1001', 77123123, 53, 'Semi-Luxury', b'0', b'0', '123'),
-('NA-0002', '1001', 77123123, 53, 'Semi-Luxury', b'1', b'0', '123'),
+('NA-0001', '1001', 77123123, 53, 'Semi-Luxury', b'0', b'0', '123')
+,('NA-0002', '1001', 77123123, 53, 'Semi-Luxury', b'1', b'0', '123'),
 ('NA-0003', '1002', 77123124, 26, 'Normal', b'0', b'0', '123'),
 ('NA-0004', '1005', 77123122, 53, 'Normal', b'0', b'0', '123'),
 ('NA-0005', '1001', 77123111, 53, 'Normal', b'0', b'0', '123'),
