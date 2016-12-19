@@ -3,6 +3,7 @@
 
 include 'includes/includes.php';
 include 'includes/model/searchresultmodel.php';
+
 $db = new DB();
 
 date_default_timezone_set('Asia/Colombo');
@@ -12,9 +13,9 @@ $to = $db->quote(get_townid($_REQUEST['to']));
 $fromtime = $db->quote(strtotime($_REQUEST['date'].' '.$_REQUEST['at']));
 $type = $db->quote($_REQUEST['type']);
 
-echo "{$_REQUEST['from']} {$_REQUEST['to']} {$_REQUEST['date']} {$_REQUEST['at']} {$_REQUEST['type']}";
+//echo "{$_REQUEST['from']} {$_REQUEST['to']} {$_REQUEST['date']} {$_REQUEST['at']} {$_REQUEST['type']}";
 
-echo $from.$to.$fromtime;
+//echo $from.$to.$fromtime;
 
 $searchresults = array();
 $statement = '';
@@ -41,8 +42,8 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 			maximumbookings,
 			havecurtains,
 			phonenumber,
-			from_unixtime(ft + journey_duration(bjid, fd)) as fromtime, 
-			from_unixtime(ft + journey_duration(bjid, td)) as totime,
+			from_unixtime(ft + journey_duration(bjid, fd), "%h:%i %p") as fromtime, 
+			from_unixtime(ft + journey_duration(bjid, td), "%h:%i %p") as totime,
 			(td - fd) * costperkm as cost,
 			#fd,
 			(td - fd) as distance,
@@ -100,6 +101,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	// <th style='text-align: center'>distance</th>
 	// </tr></table>
 	// ";
+	echo '<br>';
 	$result = $db->select($statement);
 	while($row = $result->fetch_assoc()) {
 		// echo "<table border = '1'><tr>
@@ -128,9 +130,9 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	    $searchresult = new SearchResultModel();
 	    $searchresult->cheduleid = $row['id'];
 	    $searchresult->busjourneyid = $row['bjid'];
-	    $searchresult->fromtime = (explode(' ', $row['fromtime'], 2))[1];
+	    $searchresult->fromtime = $row['fromtime'];
 	    $searchresult->fromtown = $_REQUEST['from'];
-	    $searchresult->totime = (explode(' ', $row['totime'], 2))[1];
+	    $searchresult->totime = $row['totime'];
 	    $searchresult->totown = $_REQUEST['to'];
 	    $searchresult->route = $row['route'];
 	    $searchresult->seatcount = $row['seatcount'];
@@ -141,6 +143,8 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	    $searchresult->wifi = ($row['wifi'] > 0) ? True : False;
 	    $searchresult->curtains = ($row['haveCurtains'] > 0) ? True : False;
 	    $searchresult->bustype = $row['bustype'];
+	    $searchresult->townstart = get_townname($row['townstart']);
+	    $searchresult->townend = get_townname($row['townend']);
 
 	    echo $searchresult->searchResultToHTML();
 	    echo '<br>';
