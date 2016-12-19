@@ -70,7 +70,6 @@ class SearchResultModel
 		}
 
 		$html = '
-		<br>
 		<!DOCTYPE html>
 		<html>
 		<head>
@@ -140,7 +139,7 @@ class SearchResultModel
 		<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->distance.' km</strong><br>distance</p>    
 	</div><!--
 --><div class="col-xs-3 vcenter">
-<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->cost.' LKR</strong><br>ticket price / person</p>    
+<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->cost.' LKR</strong><br><strong>booking</strong> price / person</p>    
 </div><!--
 --><div class="col-xs-6 vcenter">
 <div class="row">
