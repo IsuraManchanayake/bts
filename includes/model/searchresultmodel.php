@@ -19,6 +19,8 @@ class SearchResultModel
 	public $curtains;
 	public $bustype;
 	public $images;
+	public $townstart;
+	public $townend;
 
 	function __construct() {
 		 
@@ -68,6 +70,7 @@ class SearchResultModel
 		}
 
 		$html = '
+		<br>
 		<!DOCTYPE html>
 		<html>
 		<head>
@@ -141,16 +144,16 @@ class SearchResultModel
 </div><!--
 --><div class="col-xs-6 vcenter">
 <div class="row">
-	<p style="text-align: center; font-size: 20px">
+	<p style="text-align: right; font-size: 20px; padding-right: 50px">
 		<kbd><span>
-			<i class="glyphicon glyphicon-user"></i>
-		</span>'.$this->busowner.'</kbd>
+			<i class="glyphicon glyphicon-arrow-up"></i>
+		</span>'.$this->townstart.'</kbd>
 	</p>
 </div>
 <div class="row">
-	<p style="text-align: center; font-size: 20px"><kbd><span>
-		<i class="glyphicon glyphicon-phone"></i>
-	</span>'.$this->telephone.'</kbd></p>
+	<p style="text-align: right; font-size: 20px; padding-right: 50px"><kbd><span>
+		<i class="glyphicon glyphicon-arrow-down"></i>
+	</span>'.$this->townend.'</kbd></p>
 </div>
 </div>
 </div>
