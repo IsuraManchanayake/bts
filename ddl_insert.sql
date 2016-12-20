@@ -24,7 +24,6 @@ create table Bus(
 	BusOwnerID varchar(5),
 	phoneNumber int(10),
 	NoSeat int(3),
-	#maximumbookings int(3) default 10,
 	Type varchar(15),
 	wifi bit not null default 0,
 	haveCurtains bit default 0,
@@ -53,6 +52,7 @@ create  table Location(
 	TownID varchar(5),
 	TownName varchar(200) not null,
 	GMAPLink varchar(200),
+	position varchar(25) unique,
 	PRIMARY KEY(TownID)
 );
 # Distance is the distance to the town from the start of the route
@@ -134,15 +134,86 @@ create view publicBus
 	as 
 	select RegNumber,phoneNumber,NoSeat,Type,wifi,haveCurtains from bus;
 
+
+create view user as 
+	select RegNumber as userName,password,'bus' as type from  bus union 
+	select Name as userName,Password as password,'admin' as type from admin union 
+	select UserName as userName,Password as password,'owner' as type from busOwner;
+
+
+create view publicSchedule as 
+     select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,FromTime as FromInt,(SELECT FROM_UNIXTIME(ToTime)) as ToTime,ToTime as ToInt from  Schedule where Valid = b'1';
+
+create view BookingSchedule as 
+select distinct(s.scheduleID),b.RegNumber,j.RouteID,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,s.FromInt,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.ToInt,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID) as ToDistance,(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID) as FromDistance,(select duration from Busjourney bj where j.BusJourneyID=bj.BusJourneyID) as duration,abs((select ToDistance)-(select FromDistance)) as Distance from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID and j.valid = 1 order by 1;
+
 drop function if exists get_nearest_schedule;
 DELIMITER $$
 create function get_nearest_schedule (regnum varchar(10),time bigint)  RETURNS varchar(8)
 BEGIN
 DECLARE Schedule_ID varchar(8) DEFAULT '';
-select `ScheduleID` into Schedule_ID from (select abs(`FromTime`-30300),`ScheduleID` from `Schedule` WHERE `ScheduleID` in (select `ScheduleID` from `Schedule` where `BusJourneyID` in (select `BusJourneyID` from `Busjourney` where RegNumber='NA-0001')) order by 1 limit 1) b ;
+select `ScheduleID` into Schedule_ID from (select abs(`FromTime`-30300),`ScheduleID` from `Schedule` WHERE `ScheduleID` in (select `ScheduleID` from `Schedule` where `BusJourneyID` in (select `BusJourneyID` from `Busjourney` where RegNumber=regnum)) order by 1 limit 1) b ;
 RETURN Schedule_ID;
 end$$
 DELIMITER ;
+
+drop function if exists get_NearestLocationForward;
+DELIMITER $$
+create function get_NearestLocationForward(Schedule_ID varchar(8),time bigInt)  RETURNS varchar(200)
+BEGIN
+DECLARE Distance_val INT(3);
+DECLARE Duration_val bigint;
+DECLARE FromTime_val bigint;
+DECLARE RouteID_val INT(5);
+DECLARE FromDistance_val bigint;
+DECLARE position_val varchar(200);
+DECLARE temp float;
+DECLARE temp1 float;
+Select FromInt,Duration,Distance,RouteID,FromDistance into FromTime_val,Duration_val,Distance_val,RouteID_val,FromDistance_val from BookingSchedule b where ScheduleID=Schedule_ID limit 1;
+Select position,abs(Distance-(((time-FromTime_val)/Duration_val)*Distance_val+FromDistance_val)) into position_val,temp from RouteDestination r,Location l where r.TownID=l.TownID and RouteID=RouteID_val order by 2 limit 1;
+RETURN position_val;
+end$$
+DELIMITER ;
+
+drop function if exists get_NearestLocationBackword;
+DELIMITER $$
+create function get_NearestLocationBackword(Schedule_ID varchar(8),time bigInt)  RETURNS varchar(200)
+BEGIN
+DECLARE Distance_val INT(3);
+DECLARE Duration_val bigint;
+DECLARE FromTime_val bigint;
+DECLARE RouteID_val INT(5);
+DECLARE FromDistance_val bigint;
+DECLARE position_val varchar(200);
+DECLARE temp float;
+DECLARE temp1 float;
+Select FromInt,Duration,Distance,RouteID,FromDistance into FromTime_val,Duration_val,Distance_val,RouteID_val,FromDistance_val from BookingSchedule b where ScheduleID=Schedule_ID limit 1;
+Select position,abs(Distance-(FromDistance_val-((time-FromTime_val)/Duration_val)*Distance_val)),(FromDistance_val-((time-FromTime_val)/Duration_val)*Distance_val) into position_val,temp,temp1 from RouteDestination r,Location l where r.TownID=l.TownID and RouteID=RouteID_val order by 2 limit 1;
+RETURN position_val;
+end$$
+DELIMITER ;
+
+
+drop function if exists get_NearestLocation;
+DELIMITER $$
+create function get_NearestLocation(regnum_val varchar(10),time bigInt)  RETURNS varchar(200)
+BEGIN
+DECLARE Schedule_ID varchar(10);
+DECLARE FromDistance_val bigint;
+DECLARE ToDistance_val bigint;
+DECLARE position_val varchar(200);
+Select * into Schedule_ID from (select get_nearest_schedule(regnum_val,time)) s;
+Select FromDistance,ToDistance into FromDistance_val,ToDistance_val from bookingSchedule b where ScheduleID=Schedule_ID limit 1;
+IF(FromDistance_val<ToDistance_val)Then
+	Select * into position_val from (select get_NearestLocationForward(Schedule_ID,time)) k;
+ELSE
+	Select * into position_val from (select get_NearestLocationBackword(Schedule_ID,time)) p;
+END IF;
+RETURN position_val;
+end$$
+delimiter ;
+
+
 
 drop function if exists get_To_TownID;
 DELIMITER $$
@@ -158,18 +229,30 @@ RETURN ToTownID;
 end$$
 DELIMITER ;
 
-create view user as 
-	select RegNumber as userName,password,'bus' as type from  bus union 
-	select Name as userName,Password as password,'admin' as type from admin union 
-	select UserName as userName,Password as password,'owner' as type from busOwner;
 
 
-create view publicSchedule as 
-     select ScheduleID, BusJourneyID, FromTown, (SELECT FROM_UNIXTIME(FromTime)) as FromTime,FromTime as FromInt,(SELECT FROM_UNIXTIME(ToTime)) as ToTime,ToTime as ToInt from  Schedule where Valid = b'1';
+delimiter //
+drop trigger if exists BookingSeat_check1 //
+create trigger BookingSeat_check1 before insert on BookingSeats 
+	for each row
+	begin
+		if  (exists (select bo.TicketNo from Booking bo,BookingSeats bos where bo.TicketNo=bos.TicketNo and bos.SeatNumber=New.SeatNumber and bo.ScheduleID=((select ScheduleID from BookingSeats bs,Booking b where NEW.TicketNo=b.TicketNo limit 1)))) then
+			signal sqlstate '45001' set message_text = 'Seats are already booked';
+		end if;
+	end //
+delimiter ;
 
-create view BookingSchedule as 
-select distinct(s.scheduleID),b.RegNumber,b.PhoneNumber,b.NoSeat,b.Type,b.wifi,b.haveCurtains,s.FromTime,s.FromInt,lf.TownName as FromTownName,s.FromTown as FromTownID,s.ToTime,s.ToInt,s.BusJourneyID,get_To_TownID(s.BusJourneyID,s.FromTown) as toTownID,(select tf.townName from Location tf  where toTownID=tf.TownID) as ToTownName,abs((select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=toTownID)-(select distance from RouteDestination r where j.RouteID=r.RouteID and r.TownID=fromTownID)) as Distance  from PublicSchedule s,BusJourney j,Bus b,Location lf,Location tf where s.BusJourneyID=j.BusJourneyID and j.RegNumber=b.RegNumber and s.FromTown=lf.TownID order by 1;
 
+delimiter //
+drop trigger if exists BookingSeat_check2 //
+create trigger BookingSeat_check2 before update on BookingSeats 
+	for each row
+	begin
+		if  (exists (select bo.TicketNo from Booking bo,BookingSeats bos where bo.TicketNo=bos.TicketNo and bos.SeatNumber=New.SeatNumber and bo.ScheduleID=((select ScheduleID from BookingSeats bs,Booking b where NEW.TicketNo=b.TicketNo limit 1)))) then
+			signal sqlstate '45001' set message_text = 'Seats are already booked';
+		end if;
+	end //
+delimiter ;
 
 delimiter //
 drop trigger if exists BusJourney_check1 //
@@ -357,26 +440,6 @@ create trigger Schedule_check2 before update on Schedule
   	end //
 delimiter ;
 
-drop function get_nearest_schedule;
-DELIMITER $$
-create function get_nearest_schedule (regnum varchar(10),time bigint)  RETURNS varchar(8)
-BEGIN
-DECLARE Schedule_ID varchar(8) DEFAULT '';
-select `ScheduleID` into Schedule_ID from (select abs(`FromTime`-30300),`ScheduleID` from `Schedule` WHERE `ScheduleID` in (select `ScheduleID` from `Schedule` where `BusJourneyID` in (select `BusJourneyID` from `Busjourney` where RegNumber='NA-0001')) order by 1 limit 1) b ;
-RETURN Schedule_ID;
-end$$
-DELIMITER ;
-
-drop function if exists get_nearest_schedule;
-DELIMITER $$
-create function get_nearest_schedule (regnum varchar(10),time bigint)  RETURNS varchar(8)
-BEGIN
-DECLARE Schedule_ID varchar(8) DEFAULT '';
-select `ScheduleID` into Schedule_ID from (select abs(`FromTime`-30300),`ScheduleID` from `Schedule` WHERE `ScheduleID` in (select `ScheduleID` from `Schedule` where `BusJourneyID` in (select `BusJourneyID` from `Busjourney` where RegNumber='NA-0001')) order by 1 limit 1) b ;
-RETURN Schedule_ID;
-end$$
-DELIMITER ;
-
 drop function if exists get_To_TownID;
 DELIMITER $$
 create function get_To_TownID (busJourney_ID varchar(10),fromTownID varchar(5))  RETURNS varchar(5)
@@ -531,20 +594,20 @@ INSERT INTO `bus` (`RegNumber`, `BusOwnerID`, `phoneNumber`, `NoSeat`, `Type`, `
 ('NA-0009', '1004', 77133123, 48, 'Super-Luxury', b'1', b'1', '123'),
 ('NA-0010', '1002', 77121123, 53, 'Luxury', b'0', b'0', '123');
 
-INSERT INTO `location` (`TownID`, `TownName`, `GMAPLink`) VALUES
-('2001', 'Pettah', 'Pettah+Bus+Stop'),
-('2002', 'Kiribathgoda', 'Kiribathgoda Junction Bus Stop, Colombo-Kandy Hwy, Kiribathgoda'),
-('2003', 'Nittabuwa', 'Nittabuwa Junction, A1, Nittabuwa'),
-('2004', 'Warakapola', 'Warakapola, A1, Ambepussa'),
-('2005', 'Polgahawela', 'Polgahawela Bus Station, 06 Kurunegala Road, Polgahawela 037'),
-('2006', 'Kurunegala', 'Kurunegala'),
-('2007', 'Bambalapitiya', 'Unity Plaza Bus Stop, Galle Rd, Colombo'),
-('2008', 'Wellawatte', 'Wellawatte Mosque Bus Stop, Galle Rd, Colombo'),
-('2009', 'Mt. Lavinia', 'Mt. Lavinia Bus Stand, A2, Dehiwala-Mount Lavinia'),
-('2010', 'Katubadda', 'Katubadda, Bandaranayake Mawatha, Moratuwa'),
-('2011', 'Panadura', 'SLTB Bus Station, Panadura'),
-('2012', 'Piliyandala', 'Piliyandala Bus Stand, Piliyandala'),
-('2013', 'Kottawa', 'Kottawa Bus Station, Pannipitiya');
+INSERT INTO `location` (`TownID`, `TownName`, `GMAPLink`, `position`) VALUES
+('2001', 'Pettah', 'Pettah+Bus+Stop', '6.934112, 79.850159'),
+('2002', 'Kiribathgoda', 'Kiribathgoda Junction Bus Stop, Colombo-Kandy Hwy, Kiribathgoda', '6.977844, 79.926849'),
+('2003', 'Nittabuwa', 'Nittabuwa Junction, A1, Nittabuwa', '7.143574, 80.095554'),
+('2004', 'Warakapola', 'Warakapola, A1, Ambepussa','7.226103, 80.198753'),
+('2005', 'Polgahawela', 'Polgahawela Bus Station, 06 Kurunegala Road, Polgahawela 037', '7.335225, 80.299858'),
+('2006', 'Kurunegala', 'Kurunegala', '7.487121, 80.364970'),
+('2007', 'Bambalapitiya', 'Unity Plaza Bus Stop, Galle Rd, Colombo', '6.893335, 79.855568'),
+('2008', 'Wellawatte', 'Wellawatte Mosque Bus Stop, Galle Rd, Colombo', '7.097967, 79.846366'),
+('2009', 'Mt. Lavinia', 'Mt. Lavinia Bus Stand, A2, Dehiwala-Mount Lavinia', '6.832668, 79.867303'),
+('2010', 'Katubadda', 'Katubadda, Bandaranayake Mawatha, Moratuwa', '6.797471, 79.888536'),
+('2011', 'Panadura', 'SLTB Bus Station, Panadura', '6.712196, 79.907509'),
+('2012', 'Piliyandala', 'Piliyandala Bus Stand, Piliyandala', '6.801638, 79.922395'),
+('2013', 'Kottawa', 'Kottawa Bus Station, Pannipitiya', '6.841214, 79.965180');
 
 INSERT INTO `route` (`RouteID`) VALUES
 (6),
@@ -617,7 +680,6 @@ INSERT INTO `schedule` (`ScheduleID`, `BusJourneyID`, `FromTown`, `FromTime`, `T
 ('6037', '4010', '2009', 1481898600, 1481904000, b'1'),
 ('6038', '4010', '2013', 1481905800, 1481911200, b'1');
 
-
 insert into booking (ticketno, scheduleid, customername, state, nic, email, payment, paypalpayment) values 
 ('7001', '6001', 'isura01', 'Valid', '950304101V', 'isura01.dhaminda@gmail.com', '500.00', 'abc10001s'),
 ('7002', '6002', 'isura02', 'Valid', '950304102V', 'isura02.dhaminda@gmail.com', '501.00', 'abc10002s'),
@@ -639,26 +701,54 @@ insert into booking (ticketno, scheduleid, customername, state, nic, email, paym
 ('7018', '6018', 'isura18', 'Valid', '950304118V', 'isura18.dhaminda@gmail.com', '517.00', 'abc10018s'),
 ('7019', '6019', 'isura19', 'Valid', '950304119V', 'isura19.dhaminda@gmail.com', '518.00', 'abc10019s');
 
-insert into bookingseats values
-('7001', '2'), 
-('7002', '1'), 
-('7003', '2'), 
-('7004', '3'), 
-('7005', '2'), 
-('7006', '2'), 
-('7007', '3'), 
-('7008', '1'), 
-('7009', '1'), 
-('7010', '1'), 
-('7011', '1'), 
-('7012', '1'), 
-('7013', '2'), 
-('7014', '3'), 
-('7015', '3'), 
-('7016', '3'), 
-('7017', '3'), 
-('7018', '3'), 
-('7019', '2');
+delimiter //
+drop trigger if exists Booking_check1 //
+create trigger Booking_check1 before insert on Booking
+ 	for each row
+ 	begin
+
+ 		declare fromtime_val bigint;
+ 		select FromTime into fromtime_val from Schedule where Schedule.ScheduleID = new.ScheduleID;
+ 		if(fromtime_val < unix_timestamp(now())) then
+ 			signal sqlstate '45006' set message_text = 'Booking: time mismatch';
+ 		end if;
+  	end //
+delimiter ;
+
+delimiter //
+drop trigger if exists Booking_check2 //
+create trigger Booking_check2 before update on Booking
+ 	for each row
+ 	begin
+
+ 		declare fromtime_val bigint;
+ 		select FromTime into fromtime_val from Schedule where Schedule.ScheduleID = new.ScheduleID;
+ 		if(fromtime_val < unix_timestamp(now())) then
+ 			signal sqlstate '45006' set message_text = 'Booking: time mismatch';
+ 		end if;
+  	end //
+delimiter ;
+
+-- insert into bookingseats values
+-- ('7001', '2'), 
+-- ('7002', '1'), 
+-- ('7003', '2'), 
+-- ('7004', '3'), 
+-- ('7005', '2'), 
+-- ('7006', '2'), 
+-- ('7007', '3'), 
+-- ('7008', '1'), 
+-- ('7009', '1'), 
+-- ('7010', '1'), 
+-- ('7011', '1'), 
+-- ('7012', '1'), 
+-- ('7013', '2'), 
+-- ('7014', '3'), 
+-- ('7015', '3'), 
+-- ('7016', '3'), 
+-- ('7017', '3'), 
+-- ('7018', '3'), 
+-- ('7019', '2');
 
 insert into image values 
 ('NA-0001', 'b1.png'),
@@ -676,3 +766,4 @@ insert into image values
 ('NA-0003', 'b13.png'),
 ('NA-0004', 'b14.jpg'),
 ('NA-0005', 'b15.png');
+
