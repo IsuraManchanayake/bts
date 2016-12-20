@@ -44,12 +44,8 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	from_unixtime(ft + journey_duration(bjid, fd), "%h:%i %p") as fromtime, 
 	from_unixtime(ft + journey_duration(bjid, td), "%h:%i %p") as totime,
 	(td - fd) * costperkm as cost,
-			#fd,
 	(td - fd) as distance,
 	abs(ft + journey_duration(bjid, fd) -'.$fromtime.') as diff
-			#from_unixtime(ft) as ft1, 
-			#from_unixtime(tt) as tt1,
-			#td
 	from 
 	(
 	select 
@@ -103,12 +99,8 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	from_unixtime(ft + journey_duration(bjid, fd), "%h:%i %p") as fromtime, 
 	from_unixtime(ft + journey_duration(bjid, td), "%h:%i %p") as totime,
 	(td - fd) * costperkm as cost,
-			#fd,
 	(td - fd) as distance,
 	abs(ft + journey_duration(bjid, fd) -'.$fromtime.') as diff
-			#from_unixtime(ft) as ft1, 
-			#from_unixtime(tt) as tt1,
-			#td
 	from 
 	(
 	select 
@@ -140,7 +132,6 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	;';
 }
 
-
 $result = $db->select($statement);
 
 include 'filter.php';
@@ -168,7 +159,7 @@ while($row = $result->fetch_assoc()) {
 	$searchresult->bustype = $row['bustype'];
 	$searchresult->townstart = get_townname($row['townstart']);
 	$searchresult->townend = get_townname($row['townend']);
-	$searchresult->reservable = (intval($row['longtime']) > time());
+	$searchresult->reservable = (intval($row['longtime']) > time()) && ($searchresult->availableseatcount != $searchresult->seatcount);
 
 	$paths = get_images($row['regnumber']);
 	$searchresult->images = (sizeof($paths) > 0) ? $paths : array('images/bus.jpg');
