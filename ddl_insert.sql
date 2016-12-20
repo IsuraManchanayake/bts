@@ -435,6 +435,28 @@ BEGIN
 END$$
 DELIMITER ;
 
+drop function if exists is_between;
+DELIMITER $$
+create function is_between(end1 varchar(5), end2 varchar(5), town varchar(5), route int(4)) RETURNS int(1)
+BEGIN
+
+	declare end1d int(3);
+	declare end2d int(3);
+	declare townd int(3);
+
+	set end1d = (select distance from RouteDestination where routeid = route and townid = end1);
+	set end2d = (select distance from RouteDestination where routeid = route and townid = end2);
+	set townd = (select distance from RouteDestination where routeid = route and townid = town);
+
+	if((end1d <= townd and townd <= end2d) or (end1d >= townd and townd >= end2d)) then
+		return 1;
+	else 
+		return 0;
+	end if;
+
+END$$
+DELIMITER ;
+
 create or replace view schedule_ext as 
 	select
 			scheduleid as id,
@@ -638,3 +660,19 @@ insert into bookingseats values
 ('7018', '3'), 
 ('7019', '2');
 
+insert into image values 
+('NA-0001', 'b1.png'),
+('NA-0002', 'b2.png'),
+('NA-0003', 'b3.png'),
+('NA-0004', 'b4.jpg'),
+('NA-0005', 'b5.png'),
+('NA-0006', 'b6.jpg'),
+('NA-0007', 'b7.jpg'),
+('NA-0008', 'b8.jpg'),
+('NA-0009', 'b9.jpg'),
+('NA-0010', 'b10.jpg'),
+('NA-0001', 'b11.jpg'),
+('NA-0002', 'b12.jpg'),
+('NA-0003', 'b13.png'),
+('NA-0004', 'b14.jpg'),
+('NA-0005', 'b15.png');
