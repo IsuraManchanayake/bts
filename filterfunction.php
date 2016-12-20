@@ -37,9 +37,12 @@ if($priceub > 0) {
 }
 
 $filterstatement = "";
+if(sizeof($filters) > 1) {
+	$filterstatement = "and";
+}
 if(sizeof($filters) > 0) {
 	$last = array_pop($filters);
-	$filterstatement = implode(" and ", $filters);
+	$filterstatement .= implode(" and ", $filters);
 	$filterstatement .= ' and '.$last;
 }
 
@@ -155,7 +158,6 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	;';
 }
 
-//echo $statement;
 
 $result = $db->select($statement);
 
