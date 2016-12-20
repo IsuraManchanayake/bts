@@ -325,7 +325,7 @@ create trigger Schedule_check1 before insert on Schedule
 				(select * from Schedule where 
 					((new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
 					(new.ToTime between Schedule.FromTime and Schedule.ToTime)) and 
-					new.BusJourneyID = Schedule.BusJourneyID
+					new.BusJourneyID = Schedule.BusJourneyID and Schedule.Valid = 1
 				)
 			) then
 			signal sqlstate '45002' set message_text = 'Schedule: Overlapping schedules';
@@ -345,8 +345,12 @@ create trigger Schedule_check2 before update on Schedule
 				(select * from Schedule where 
 					((new.FromTime between Schedule.FromTime and Schedule.ToTime) or 
 					(new.ToTime between Schedule.FromTime and Schedule.ToTime)) and 
-					new.BusJourneyID = Schedule.BusJourneyID
+					new.BusJourneyID = Schedule.BusJourneyID and Schedule.Valid = 1
 				)
+			and
+				new.Valid = 1
+			and 
+				not exists (select * from schedule where schedule.scheduleid)
 			) then
 			signal sqlstate '45002' set message_text = 'Schedule: Overlapping schedules';
 		end if;
