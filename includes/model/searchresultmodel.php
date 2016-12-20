@@ -21,6 +21,8 @@ class SearchResultModel
 	public $images;
 	public $townstart;
 	public $townend;
+	public $reservable;
+	public $visible = 1;
 
 	function __construct() {
 
@@ -31,7 +33,7 @@ class SearchResultModel
 		$banid = $this->scheduleid;
 		$fromtownid = get_townid($this->fromtown);
 
-		$labels = '<span class="label label-default">'.$this->seatcount.'seats</span> ';
+		$labels = '<span class="label label-default">'.$this->seatcount.' seats</span> ';
 		if($this->wifi) {
 			$labels = $labels.'<span class="label label-default">Wifi</span> ';
 		}
@@ -102,54 +104,56 @@ class SearchResultModel
 			--><div class="col-xs-3 vcenter">
 			<p style="text-align: center;font-size: 10px"><strong style="font-size: 30px">'.$this->availableseatcount.' / '.$this->seatcount.'</strong><br>available seats</p>
 		</div>
-	</div>
+			</div>
 
-	<div class="row">
-		<div class="col-xs-3 vcenter">
-			<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->distance.' km</strong><br>distance</p>    
+			<div class="row">
+				<div class="col-xs-3 vcenter">
+					<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->distance.' km</strong><br>distance</p>    
+				</div><!--
+			--><div class="col-xs-3 vcenter">
+			<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->cost.' LKR</strong><br><strong>booking</strong> price / person</p>    
 		</div><!--
-	--><div class="col-xs-3 vcenter">
-	<p style="text-align: center;font-size: 10px"><strong style="font-size: 20px">'.$this->cost.' LKR</strong><br><strong>booking</strong> price / person</p>    
-</div><!--
---><div class="col-xs-6 vcenter">
-<div class="row">
-	<p style="text-align: right; font-size: 20px; padding-right: 50px">
-		<kbd><span>
-			<i class="glyphicon glyphicon-arrow-up"></i>
-		</span>'.$this->townstart.'</kbd>
-		<kbd><span>
-		<i class="glyphicon glyphicon-arrow-down"></i>
-	</span>'.$this->townend.'</kbd>
-	</p>
-</div>
-<div class="row">
-	<p style="text-align: right; font-size: 20px; padding-right: 50px"><kbd><span>
-		<i class="glyphicon glyphicon-phone-alt"></i>
-	</span>'.$this->telephone.'</kbd></p>
-</div>
-</div>
-</div>
-<div class="row">
-	'.$labels.
-	'</div>
-	<div class="row" style="margin-right: 5px; text-align: center;">
-	<input type="hidden" name="fromtown" value="'.$fromtownid.'">
-		<button class="btn btn-primary" style="margin-top: 2px; width:50%;  position: 50%;" name = "scheduleid" value = "'.$this->scheduleid.'">
-			<span>
-				<i class="glyphicon glyphicon-shopping-cart"></i>
-			</span> Reserve
-		</button>
-		
-	</div>
-</div>
-</div>
-</div>
+		--><div class="col-xs-6 vcenter">
+		<div class="row">
+			<p style="text-align: right; font-size: 20px; padding-right: 50px">
+				<kbd><span>
+					<i class="glyphicon glyphicon-arrow-up"></i>
+				</span>'.$this->townstart.'</kbd>
+				<kbd><span>
+				<i class="glyphicon glyphicon-arrow-down"></i>
+			</span>'.$this->townend.'</kbd>
+			</p>
+		</div>
+		<div class="row">
+			<p style="text-align: right; font-size: 20px; padding-right: 50px"><kbd><span>
+				<i class="glyphicon glyphicon-phone-alt"></i>
+			</span>'.$this->telephone.'</kbd></p>
+		</div>
+		</div>
+		</div>
+		<div class="row">
+			'.$labels.
+			'</div>
+			<div class="row" style="margin-right: 5px; text-align: center;">
+			<input type="hidden" name="fromtown" value="'.$fromtownid.'">
+				<button class="btn btn-primary"'.($this->reservable ? "" : ' disabled = "true" title = "disabled: the bus has already started journey"').' style="margin-top: 2px; width:50%;  position: 50%;" name = "scheduleid" value = "'.$this->scheduleid.'">
+					<span>
+						<i class="glyphicon glyphicon-shopping-cart"></i>
+					</span> Reserve
+				</button>
+				
+			</div>
+		</div>
+		</div>
+		</div>
 
-</div>
-</form>';
+		</div>
+		</form>';
 
-return $html;
-}
+		return $html;
+	}
+
+
 
 }
 
