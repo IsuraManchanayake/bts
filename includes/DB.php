@@ -73,10 +73,6 @@ class DB {
             return false;
         }
         return $result;
-        // while ($row = $result -> fetch_assoc()) {
-        //     $rows[] = $row;
-        // }
-        // return $rows;
     }
 
     /**
@@ -98,6 +94,7 @@ class DB {
     public function quote($value) {
         $connection = $this -> connect();
         return "'" . $connection -> real_escape_string($value) . "'";
+    	//return $value;
     }
 }
 
