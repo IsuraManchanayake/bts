@@ -10,8 +10,12 @@ function search() {
 	from = "Mt. Lavinia";
 	to = "Katubadda";
 	date = "2016-12-16";
-	at = "08:30";
+	at = "09:30";
 	type = "Any";
+	
+	if(from == 'select' || to == 'select') {
+		alert("fill location names");
+	} else {
 
 	$("#search-results").load('search.php?', 
 		{
@@ -22,6 +26,7 @@ function search() {
 			'type' : type
 		}
 	);
+
 	/*if(from == "select" || to == "select") {
 		alert("please select locations");
 		return;
@@ -31,6 +36,5 @@ function search() {
 		alert("please select time");
 		return;
 	}*/
-
-
+	}
 }
