@@ -20,9 +20,9 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="width: 100%">
     <div style="border: 1px solid silver; border-radius: 5px">
-      <div class="row" style="padding: 5px; padding-bottom: 2px">
+      <div class="row" style="padding: 5px; padding-bottom: 2px;">
 
         <div class="col-xs-4">
           <div id="banner">
