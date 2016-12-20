@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <style type="text/css">
-       #banner{
+     #banner{
         width:100%;
         position: absolute;
         z-index: -1;
@@ -29,7 +29,7 @@
 <title>Bus Ticketing System</title>
 </head>
 <body>
- <nav class="navbar navbar-inverse navbar-fixed-top">
+   <nav class="navbar navbar-inverse navbar-fixed-top">
 
     <div class="container-fluid">
         <div class = "nav navbar-header">
@@ -94,15 +94,9 @@
 </div>
 
 
-
-<div class="row" >
-    <div id = "search-results">
-
-        <?php
-        //include('searchresult.php');
-        //displayresult('', '', '', '', '', '', '', '', '', '', '', '', '', '', array());
-        ?>
-    </div>
+<div class="container" id = "search-results" style="width: 100%">
+<!-- search results come here via search.php -->
+</div> <!-- container search-result end-->
 </div>
 </div> 
 
