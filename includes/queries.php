@@ -27,4 +27,16 @@
 		return $row['townname'];
 	}
 
+
+	function get_images($regnumber) {
+		$db = new DB();
+		$regnumber = $db->quote($regnumber);
+		$result = $db->select('select imagepath from image where regnumber = '.$regnumber);
+		$paths = array();
+		while ($row = $result->fetch_assoc()) {
+			$paths[] = 'images/'.$row['imagepath'];
+		}
+		return $paths;
+	}
+
 ?>
