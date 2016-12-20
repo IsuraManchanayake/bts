@@ -16,6 +16,7 @@ $type = $_REQUEST['type'];
 
 $searchresults = array();
 $statement = '';
+$threshold = 3600;
 
 if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type != 'Super-Luxury') {
 	$statement = 'select
@@ -43,7 +44,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	(td - fd) * costperkm as cost,
 			#fd,
 	(td - fd) as distance,
-	abs(ft -'.$fromtime.') as diff
+	abs(ft + journey_duration(bjid, fd) -'.$fromtime.') as diff
 			#from_unixtime(ft) as ft1, 
 			#from_unixtime(tt) as tt1,
 			#td
@@ -58,6 +59,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	select * from extended_schedule left outer join costperkm
 	on extended_schedule.type = costperkm.bustype
 	) as with_cost
+	where is_between(ftown, totown, 2009, routeid) and is_between(ftown, totown, 2010, routeid)
 	) as dd
 	where td >= fd
 	) as titable
@@ -71,7 +73,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	group by scheduleid
 	) as bookingcnt
 	on bookingcnt.scheduleid = titable.id
-	where diff <= 3600
+	where diff <= '.$threshold.'
 	order by diff
 	;';
 } else {
@@ -100,7 +102,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	(td - fd) * costperkm as cost,
 			#fd,
 	(td - fd) as distance,
-	abs(ft -'.$fromtime.') as diff
+	abs(ft + journey_duration(bjid, fd) -'.$fromtime.') as diff
 			#from_unixtime(ft) as ft1, 
 			#from_unixtime(tt) as tt1,
 			#td
@@ -115,6 +117,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	select * from extended_schedule left outer join costperkm
 	on extended_schedule.type = costperkm.bustype
 	) as with_cost
+	where is_between(ftown, totown, 2009, routeid) and is_between(ftown, totown, 2010, routeid)
 	) as dd
 	where td >= fd
 	) as titable
@@ -128,7 +131,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	group by scheduleid
 	) as bookingcnt
 	on bookingcnt.scheduleid = titable.id
-	where diff <= 3600
+	where diff <= '.$threshold.'
 	and bustype = '.$qtype.'
 	order by diff
 	;';
@@ -136,6 +139,10 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 
 echo '<br>';
 $result = $db->select($statement);
+
+include 'filter.php';
+echo filterbegin();
+
 while($row = $result->fetch_assoc()) {
 
 	$searchresult = new SearchResultModel();
@@ -157,10 +164,14 @@ while($row = $result->fetch_assoc()) {
 	$searchresult->townstart = get_townname($row['townstart']);
 	$searchresult->townend = get_townname($row['townend']);
 
+	$paths = get_images($row['regnumber']);
+	$searchresult->images = (sizeof($paths) > 0) ? $paths : array('images/bus.jpg');
+
 	$searchresults[] = $searchresult;
 
 	echo $searchresult->searchResultToHTML();
 	echo '<br>';
 }
+echo filterend();
 
 ?>
