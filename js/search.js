@@ -22,7 +22,6 @@ function search() {
 			'type' : type
 		}
 	);
-
 	/*if(from == "select" || to == "select") {
 		alert("please select locations");
 		return;

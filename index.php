@@ -26,10 +26,10 @@
   }
 </style>
 <?php include('includes/includes.php'); ?>
-<title>Title</title>
+<title>Bus Ticketing System</title>
 </head>
 <body>
- <nav class="navbar navbar-inverse navbar-fixed-top   ">
+ <nav class="navbar navbar-inverse navbar-fixed-top">
 
     <div class="container-fluid">
         <div class = "nav navbar-header">
@@ -49,7 +49,7 @@
                 <li>
                     <button class = "btn btn-sm btn-warning navbar-btn "  href="#">Register</button>
                 </li>
-                <li ><a href="#"   >login</a></li>
+                <li ><a href="#"   >Login</a></li>
             </ul>
 
         </div>
@@ -192,7 +192,7 @@
 
 
                     <div class="col-sm-2" >    
-                        <button class="btn btn-primary" style="width: 100%;" onclick="search()">
+                        <button class="btn btn-primary" style="width: 100%;" href="#search-results" onclick="search()">
                             <span>
                                 <i class="glyphicon glyphicon-search"></i>
                             </span> Search
