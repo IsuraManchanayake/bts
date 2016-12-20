@@ -1,6 +1,7 @@
 
 <?php
 
+
 include 'includes/includes.php';
 include 'includes/model/searchresultmodel.php';
 
@@ -39,6 +40,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	maximumbookings,
 	havecurtains,
 	phonenumber,
+	(ft + journey_duration(bjid, fd)) as longtime,
 	from_unixtime(ft + journey_duration(bjid, fd), "%h:%i %p") as fromtime, 
 	from_unixtime(ft + journey_duration(bjid, td), "%h:%i %p") as totime,
 	(td - fd) * costperkm as cost,
@@ -59,7 +61,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	select * from extended_schedule left outer join costperkm
 	on extended_schedule.type = costperkm.bustype
 	) as with_cost
-	where is_between(ftown, totown, 2009, routeid) and is_between(ftown, totown, 2010, routeid)
+	where is_between(ftown, totown, '.$from.', routeid) and is_between(ftown, totown, '.$to.', routeid)
 	) as dd
 	where td >= fd
 	) as titable
@@ -97,6 +99,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	maximumbookings,
 	havecurtains,
 	phonenumber,
+	(ft + journey_duration(bjid, fd)) as longtime,
 	from_unixtime(ft + journey_duration(bjid, fd), "%h:%i %p") as fromtime, 
 	from_unixtime(ft + journey_duration(bjid, td), "%h:%i %p") as totime,
 	(td - fd) * costperkm as cost,
@@ -117,7 +120,7 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	select * from extended_schedule left outer join costperkm
 	on extended_schedule.type = costperkm.bustype
 	) as with_cost
-	where is_between(ftown, totown, 2009, routeid) and is_between(ftown, totown, 2010, routeid)
+	where is_between(ftown, totown, '.$from.', routeid) and is_between(ftown, totown, '.$to.', routeid)
 	) as dd
 	where td >= fd
 	) as titable
@@ -137,11 +140,13 @@ if ($type != 'Normal' && $type != 'Semi-Luxury' && $type != 'Luxury' && $type !=
 	;';
 }
 
-echo '<br>';
+
 $result = $db->select($statement);
 
 include 'filter.php';
-echo filterbegin();
+
+$ftime = strtotime($_REQUEST['date'].' '.$_REQUEST['at']) - $threshold;
+$ttime = $ftime + 2 * $threshold;
 
 while($row = $result->fetch_assoc()) {
 
@@ -163,15 +168,33 @@ while($row = $result->fetch_assoc()) {
 	$searchresult->bustype = $row['bustype'];
 	$searchresult->townstart = get_townname($row['townstart']);
 	$searchresult->townend = get_townname($row['townend']);
+	$searchresult->reservable = (intval($row['longtime']) > time());
 
 	$paths = get_images($row['regnumber']);
 	$searchresult->images = (sizeof($paths) > 0) ? $paths : array('images/bus.jpg');
 
 	$searchresults[] = $searchresult;
+}
 
+echo '<br>';
+echo filterbegin();
+if(sizeof($searchresults) > 0) {
+	echo '<div id="row"
+	<br><p style="font-size: 20px">&nbsp&nbsp Search result(s) from <strong>'.$_REQUEST['from'].'</strong> to <strong>'.$_REQUEST['to'].'</strong> at 
+	<strong>'.date("H:i A",$ftime).'</strong> - <strong>'.date("H:i A", $ttime).'</strong></p><br>
+</div>';
+
+foreach($searchresults as $searchresult) {
 	echo $searchresult->searchResultToHTML();
 	echo '<br>';
 }
+} else {
+	echo '<div id="row"
+	<br><p style="font-size: 20px">&nbsp&nbsp No search result from <strong>'.$_REQUEST['from'].'</strong> to <strong>'.$_REQUEST['to'].'</strong> at 
+	<strong>'.date("H:i A",$ftime).'</strong> - <strong>'.date("H:i A", $ttime).'</strong></p><br>
+</div>';
+}
 echo filterend();
+
 
 ?>
