@@ -102,7 +102,7 @@
 
 
 
-<div style="border: 1px solid silver; border-radius: 5px; top: 200px; width: 100%; display: block; position: absolute; background: rgba(255, 255, 255, 0.6">
+<div style="border: 1px solid silver; border-radius: 5px; top: 300px; width: 100%; display: block; position: absolute; background: rgba(255, 255, 255, 0.6">
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-2">
@@ -197,5 +197,6 @@
         </div>
 
         <script type="text/javascript" src="js/search.js"></script>
+        <script type="text/javascript" src="js/filter.js"></script>
     </body>
     </html>
