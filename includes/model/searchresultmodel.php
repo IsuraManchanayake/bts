@@ -28,54 +28,35 @@ class SearchResultModel
 
 	function searchResultToHTML() {
 
-		include 'BookTicket.php';
-
-		// $fromtime = '2:00 AM';
-  // //$fromtown = 'gettah';
-		// $totime = '5:00 AM';
-  // //$totown = 'Kurunegala';
-		// $route = '5';
-		// $availableseatcount = '14';
-		// $seatcount = '48';
-		// $distance = '91.5';
-		// $cost = '340.00';
-		$this->busowner = 'DS Gunasekara';
 		$banid = $this->scheduleid;
-		// $telephone = '+94 71 5850 028';
-  // //$bustype = 'Semi-Luxury';
-		$this->images = array('1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg');
-		// $banid = $scheduleid;
-		// $wifi = True;
-		// $curtains = True;
-
 		$fromtownid = get_townid($this->fromtown);
 
-		$labels = '<span class="label label-default" >'.$this->seatcount.' seats</span>';
+		$labels = '<span class="label label-default">'.$this->seatcount.'seats</span> ';
 		if($this->wifi) {
-			$labels = $labels.'<span class="label label-default">Wifi</span>';
+			$labels = $labels.'<span class="label label-default">Wifi</span> ';
 		}
 		if($this->curtains) {
-			$labels = $labels.'<span class="label label-default">Curtains</span>';
+			$labels = $labels.'<span class="label label-default">Curtains</span> ';
 		}
 
 		switch ($this->bustype) {
 			case 'Normal':
-			$labels = $labels.'<span class="label label-warning">Normal</span>';
+			$labels = $labels.'<span class="label label-warning">Normal</span> ';
 			break;
 			case 'Semi-Luxury':
-			$labels = $labels.'<span class="label label-info">Semi-Luxury</span>';
+			$labels = $labels.'<span class="label label-info">Semi-Luxury</span> ';
 			break;
 			case 'Luxury':
-			$labels = $labels.'<span class="label label-success">Luxury</span>';
+			$labels = $labels.'<span class="label label-success">Luxury</span> ';
 			break;
 			case 'Super-Luxury':
-			$labels = $labels.'<span class="label label-primary">Super-Luxury</span>';
+			$labels = $labels.'<span class="label label-primary">Super-Luxury</span> ';
 			break;
 		}
 
 		$html = '
 			<form role="form" action="BookTicket.php" method="get" target="_blank">
-				<div class="container">
+				<div class="container" style="width:100%">
 					<div style="border: 1px solid silver; border-radius: 5px">
 						<div class="row" style="padding: 5px; padding-bottom: 2px">
 
@@ -83,11 +64,11 @@ class SearchResultModel
 								<div id="banner">';
 
 									foreach($this->images as $value) {
-										$html = $html.'<img class="a'.$banid.' img-thumbnail" src="images/'.$value.'" style="width: 80%">';
+										$html = $html.'<img class="a'.$banid.' img-thumbnail" src="'.$value.'" style="width: 80%">';
 									}
 
 									$html = $html.'<script type="text/javascript">
-									var slideIndex = 0;
+									var slideIndex'.$banid.' = 0;
 									carousel'.$banid.'();
 
 									function carousel'.$banid.'() {
@@ -96,11 +77,11 @@ class SearchResultModel
 										for (i = 0; i < x.length; i++) {
 											x[i].style.display = "none"; 
 										}
-										slideIndex++;
-										if (slideIndex > x.length) {
-											slideIndex = 1;
+										slideIndex'.$banid.'++;
+										if (slideIndex'.$banid.' > x.length) {
+											slideIndex'.$banid.' = 1;
 										} 
-										x[slideIndex-1].style.display = "block"; 
+										x[slideIndex'.$banid.'-1].style.display = "block"; 
 										setTimeout(carousel'.$banid.', 2000); // Change image every 2 seconds
 									}
 								</script>
