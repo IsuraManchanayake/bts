@@ -29,9 +29,9 @@ class SearchResultModel
 	}
 
 	function searchResultToHTML() {
-
 		$banid = $this->scheduleid;
 		$fromtownid = get_townid($this->fromtown);
+		$totownid = get_townid($this->totown);
 
 		$labels = '<span class="label label-default">'.$this->seatcount.' seats</span> ';
 		if($this->wifi) {
@@ -136,6 +136,8 @@ class SearchResultModel
 			'</div>
 			<div class="row" style="margin-right: 5px; text-align: center;">
 			<input type="hidden" name="fromtown" value="'.$fromtownid.'">
+			<input type="hidden" name="totown" value="'.$totownid.'">
+			<input type="hidden" name="routeid" value="'.$this->route.'">
 				<button class="btn btn-primary"'.($this->reservable ? "" : ' disabled = "true" title = "disabled: the bus has already started journey"').' style="margin-top: 2px; width:50%;  position: 50%;" name = "scheduleid" value = "'.$this->scheduleid.'">
 					<span>
 						<i class="glyphicon glyphicon-shopping-cart"></i>
