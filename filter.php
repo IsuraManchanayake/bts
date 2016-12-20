@@ -8,13 +8,13 @@ function filterbegin() {
     <div class="row checkbox">
       <label for="inputEmail3" class="col-sm-9 control-label" style="margin-left: -5px"><strong>Wifi</strong></label>
       <label>
-        <input type="checkbox"> 
+        <input id="wificheck" type="checkbox"> 
       </label>
     </div>
     <div class="row checkbox">
       <label for="inputEmail3" class="col-sm-9 control-label" style="margin-left: -5px"><strong>Curtains</strong></label>
       <label>
-        <input type="checkbox">
+        <input id="curtaincheck" type="checkbox">
       </label>
     </div>
 
@@ -23,7 +23,7 @@ function filterbegin() {
     <div class="row">
       <label for="inputEmail3" class="col-sm-5 control-label" style="font-size: 10px">Booking price less than</label>
       <div class="col-sm-7">
-        <input type="number" class="form-control pull-right" id="inputEmail3" min = "10" style="text-align: right" placeholder="LKR">
+        <input type="number" class="form-control pull-right" id="priceub" min = "10" style="text-align: right" placeholder="LKR">
       </div>
     </div>
 
@@ -35,31 +35,31 @@ function filterbegin() {
     <div class="radio">
       <label class="col-sm-10">Any</label>
       <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+        <input type="radio" name="bustyperadio" id="optionsRadios1" value="Any" checked>
       </label>
     </div>
     <div class="radio">
       <label class="col-sm-10">Normal</label>
       <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+        <input type="radio" name="bustyperadio" id="optionsRadios2" value="Normal">
       </label>
     </div>
     <div class="radio">
       <label class="col-sm-10">Semi-Luxury</label>
       <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+        <input type="radio" name="bustyperadio" id="optionsRadios3" value="Semi-Luxury">
       </label>
     </div>
     <div class="radio">
       <label class="col-sm-10">Luxury</label>
       <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+        <input type="radio" name="bustyperadio" id="optionsRadios4" value="Luxury">
       </label>
     </div>
     <div class="radio">
       <label class="col-sm-10">Super-Luxury</label>
       <label>
-        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1">
+        <input type="radio" name="bustyperadio" id="optionsRadios5" value="Super-Luxury">
       </label>
     </div>
 
@@ -68,12 +68,12 @@ function filterbegin() {
     <div class="row">
       <label for="inputEmail3" class="col-sm-5 control-label" style="font-size: 10px">Time accuracy in hours</label>
       <div class="col-sm-7">
-        <input type="number" class="form-control pull-right" id="inputEmail3" placeholder="" style="text-align: right" value = "1" min = "1">
+        <input type="number" class="form-control pull-right" id="timethreshold" placeholder="" style="text-align: right" value = "1" min = "1">
       </div>
     </div>
 
     <br>
-    <button class="btn btn-primary" style="width: 100%;">
+    <button class="btn btn-primary" style="width: 100%;" onclick="filter()">
       <span>
         <i class="glyphicon glyphicon-filter"></i>
       </span> Filter
