@@ -7,11 +7,11 @@ function search() {
 	var at = $("#at").val();
 	var type = $("#type").val();
 
-	from = "Mt. Lavinia";
-	to = "Katubadda";
-	date = "2016-12-16";
-	at = "09:30";
-	type = "Any";
+	//from = "Mt. Lavinia";
+	//to = "Katubadda";
+	//date = "2016-12-16";
+	//at = "08:30";
+	//type = "Any";
 	
 	if(from == 'select' || to == 'select') {
 		alert("fill location names");
