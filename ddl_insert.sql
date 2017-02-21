@@ -570,12 +570,12 @@ create or replace view extended_schedule as (select * from searchSchedule natura
 
 
 INSERT INTO `busowner` (`ID`, `Name`, `UserName`, `Password`, `Nic`, `Email`) VALUES
-('1001', 'BusOwner1', 'BO1', '123', '1231231231', NULL),
-('1002', 'BusOwner2', 'BO2', '123', '1231231232', NULL),
-('1003', 'BusOwner3', 'BO3', '123', '1231231233', NULL),
-('1004', 'BusOwner4', 'BO4', '123', '1231231234', NULL),
-('1005', 'BusOwner5', 'BO5', '123', '1231231235', NULL),
-('1006', 'BusOwner6', 'BO6', '123', '1231231236', NULL);
+('1001', 'BusOwner1', 'BO1', password('123'), '1231231231', NULL),
+('1002', 'BusOwner2', 'BO2', password('123'), '1231231232', NULL),
+('1003', 'BusOwner3', 'BO3', password('123'), '1231231233', NULL),
+('1004', 'BusOwner4', 'BO4', password('123'), '1231231234', NULL),
+('1005', 'BusOwner5', 'BO5', password('123'), '1231231235', NULL),
+('1006', 'BusOwner6', 'BO6', password('123'), '1231231236', NULL);
 
 insert into CostPerKm values ('Super-Luxury','45'),
 	 ('Luxury','35'),
@@ -583,16 +583,16 @@ insert into CostPerKm values ('Super-Luxury','45'),
 	 ('Normal','15');
 
 INSERT INTO `bus` (`RegNumber`, `BusOwnerID`, `phoneNumber`, `NoSeat`, `Type`, `wifi`, `haveCurtains`, `password`) VALUES
-('NA-0001', '1001', 77123123, 53, 'Semi-Luxury', b'0', b'0', '123')
-,('NA-0002', '1001', 77123123, 53, 'Semi-Luxury', b'1', b'0', '123'),
-('NA-0003', '1002', 77123124, 26, 'Normal', b'0', b'0', '123'),
-('NA-0004', '1005', 77123122, 53, 'Normal', b'0', b'0', '123'),
-('NA-0005', '1001', 77123111, 53, 'Normal', b'0', b'0', '123'),
-('NA-0006', '1001', 77123423, 48, 'Semi-Luxury', b'0', b'1', '123'),
-('NA-0007', '1003', 77123113, 53, 'Luxury', b'1', b'1', '123'),
-('NA-0008', '1003', 77123103, 53, 'Semi-Luxury', b'1', b'1', '123'),
-('NA-0009', '1004', 77133123, 48, 'Super-Luxury', b'1', b'1', '123'),
-('NA-0010', '1002', 77121123, 53, 'Luxury', b'0', b'0', '123');
+('NA-0001', '1001', 77123123, 53, 'Semi-Luxury', b'0', b'0', password('123')),
+('NA-0002', '1001', 77123123, 53, 'Semi-Luxury', b'1', b'0', password('123')),
+('NA-0003', '1002', 77123124, 26, 'Normal', b'0', b'0', password('123')),
+('NA-0004', '1005', 77123122, 53, 'Normal', b'0', b'0', password('123')),
+('NA-0005', '1001', 77123111, 53, 'Normal', b'0', b'0', password('123')),
+('NA-0006', '1001', 77123423, 48, 'Semi-Luxury', b'0', b'1', password('123')),
+('NA-0007', '1003', 77123113, 53, 'Luxury', b'1', b'1', password('123')),
+('NA-0008', '1003', 77123103, 53, 'Semi-Luxury', b'1', b'1', password('123')),
+('NA-0009', '1004', 77133123, 48, 'Super-Luxury', b'1', b'1', password('123')),
+('NA-0010', '1002', 77121123, 53, 'Luxury', b'0', b'0', password('123'));
 
 INSERT INTO `location` (`TownID`, `TownName`, `GMAPLink`, `position`) VALUES
 ('2001', 'Pettah', 'Pettah+Bus+Stop', '6.934112, 79.850159'),
@@ -631,7 +631,7 @@ INSERT INTO `routedestination` (`RouteID`, `TownID`, `Distance`) VALUES
 (255, '2010', 10),
 (255, '2012', 40),
 (255, '2013', 60);
-
+B
 INSERT INTO `busjourney` (`BusJourneyID`, `RegNumber`, `RouteID`, `FromTown`, `ToTown`, `Duration`) VALUES
 ('4001', 'NA-0001', 6, '2001', '2006', '10800'),
 ('4003', 'NA-0002', 6, '2005', '2006', '3600'),
@@ -767,3 +767,12 @@ insert into image values
 ('NA-0004', 'b14.jpg'),
 ('NA-0005', 'b15.png');
 
+
+insert into admin values
+('9000', 'isura1', password('123')),
+('9001', 'isura2', password('123')),
+('9002', 'isura3', password('123')),
+('9003', 'isura4', password('123')),
+('9004', 'isura5', password('123')),
+('9005', 'isura6', password('123')),
+('9006', 'isura7', password('123'));

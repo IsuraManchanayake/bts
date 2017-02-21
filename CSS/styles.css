@@ -1,0 +1,126 @@
+.mbtm{
+    display: block;
+    /*margin-inside:20px ;*/
+}
+
+
+
+
+.useredit{
+    /*display: block;*/
+    /*padding: 10px;*/
+    /*margin-left: 12px;*/
+    /*margin-right: 12px;*/
+    /*position: absolute;*/
+    margin-top: 51px;
+    background-color: inherit;
+    border-radius: 5px;
+
+    /*height: 100vh;*/
+
+    /*border : ridge;*/
+
+}
+
+.main2{
+    /*display: block;*/
+    padding: 20px;
+    /*margin-left: 12px;*/
+    /*margin-right: 12px;*/
+    /*position: absolute;*/
+    margin-top: 51px;
+    background-color: #3c3c3c;
+    border-radius: 5px;
+    padding-right: -15px;
+    /*height: 100vh;*/
+
+    /*border : ridge;*/
+
+}
+@media (max-width: 800px) {
+    .media{
+        margin-left: -20px;
+        margin-right: -30px;
+    }
+}
+
+@media  (max-width: 768px){
+    .main2{
+        margin-top: 0px;
+    }
+    .media{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+}
+.rowedit{
+    margin-right: 0px;
+}
+.jumbotron{
+    border-radius: 10px;
+}
+.img-resize{
+    width : 100px;
+    /*margin-top: 30px;*/
+}
+.username{
+    color: #2aabd2;
+}
+.media-heading{
+    margin-top: 20px;
+}
+.btn-edit{
+    margin-top: -45px;
+}
+.panel-primary{
+    margin-top: 10px;
+}
+.img-bus{
+    min-width: 200px;
+}
+.main-scedule{
+    height: 100%;
+    background-color: #9acfea;
+}
+.main-details{
+    /*border: 2px solid blue;*/
+    min-height: 100%;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    margin-top: -40px;
+
+
+}
+.basic-info{
+    /*border: 2px solid blue;*/
+    min-height: 100%;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    margin-top: 0px;
+    padding: 10px;
+
+
+}
+.main-details > .page-header {
+    border-bottom: 2px solid #2aabd2;
+    padding-top: 10px;
+}
+.bus-jour > .page-header {
+    border-bottom: 2px solid #2aabd2;
+
+    margin-top: -8px
+}
+.edit-btn{
+    margin-top: -35px;
+}
+.bus-jour{
+    min-height: 100%;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    margin-top: 0px;
+    padding: 10px;
+    ;
+
+
+}

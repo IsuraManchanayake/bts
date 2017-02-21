@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LogIn</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/CenterContainer.css">
+    <script src="../JS/jQuery.js"></script>
+    <script src="../JS/bootstrap.min.js"></script>
+    <script src="../JS/LogIn.js"></script>
+</head>
+<body>
+    <div class="container container-table">
+
+        <div class="row vertical-center-row" >
+            <H1 class="text-center col-md-6 col-md-offset-3" style="background-color: #bae3e1;padding-top: 10px;padding-bottom: 10px;">Log In</H1>
+            <form id="myForm" class="col-md-6 col-md-offset-3 jumbotron text-left" style="padding-top:30px;background-color: #bae6f1;font-size: 15pt;" onsubmit="return submitData()">
+                <div class="row">
+                <div class="col-md-3" style="padding-top: 8px;"><strong>Role</strong></div>
+                <div class="col-md-8 input-div">
+                    <select id="role" class="col-md-12 btn btn-default form-control">
+                        <option value="Busowner" selected>Bus Owner</option>
+                        <option value="BusOperator">Bus Operator</option>
+                    </select>
+                </div>
+                </div>
+                <div class="row input-div">
+                    <div class="col-md-3" style="padding-top: 4px;"><strong>Name</strong></div>
+                    <div class="col-md-9" >
+                        <input id="name" type="text" placeholder="User Name" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row input-div">
+                    <div class="col-md-3"style="padding-top: 4px;"><strong>Password</strong></div>
+                    <div class="col-md-9" >
+                        <input id="password" type="password" placeholder="Password" class="form-control"/>
+                    </div>
+                </div>
+                <div class="row text-right" style="padding-top: 20px">
+                    <button type="submit" class="btn btn-danger">Log In</button>
+                </div>
+
+            </form>
+            <div style="height: 60%"></div>
+        </div>
+    </div>
+</body>
+</html>
